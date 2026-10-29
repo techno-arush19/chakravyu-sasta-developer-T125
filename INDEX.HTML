@@ -46,7 +46,6 @@
             pointer-events: none;
         }
         .font-code { font-family: 'DM Mono', monospace; }
-        .glow-cyan, .glow-purple { box-shadow: none; }
         header {
             min-height: 76px;
             padding-inline: max(24px, calc((100vw - 1320px) / 2)) !important;
@@ -61,7 +60,15 @@
             font-size: 17px !important;
             letter-spacing: 0 !important;
         }
-        header .rounded-full { animation: none; }
+        .header-control-group { gap: 12px; }
+        .diagnostic-button, .sprint-button { display: inline-flex; align-items: center; gap: 9px; min-height: 38px; padding: 8px 11px; border: 1px solid var(--line); border-radius: 5px; background: #fffafd; color: var(--ink); font: 10px 'DM Mono', monospace; cursor: pointer; }
+        .diagnostic-button:hover, .sprint-button:hover { border-color: #b78ed0; background: #f7effa; }
+        .diagnostic-dot { width: 8px; height: 8px; border-radius: 50%; background: #a44f6e; }
+        .diagnostic-dot.is-active { background: #7d9e75; animation: diagnostic-pulse 1.4s ease-in-out infinite; }
+        .diagnostic-state-active { color: #426b4b; }
+        .diagnostic-state-paused { color: #a34f77; }
+        .sprint-button.is-active { border-color: #d7c2e4; background: #f0e7f6; color: #4a3558; }
+        @keyframes diagnostic-pulse { 50% { box-shadow: 0 0 0 5px rgba(125, 158, 117, .17); opacity: .7; } }
         header [class~="bg-slate-800/60"] {
             background: #f5eaf2 !important;
             border-color: var(--line) !important;
@@ -101,7 +108,6 @@
         .lab-kicker { margin: 0 0 10px; color: #80549c; font: 11px 'DM Mono', monospace; }
         .lab-intro h2 { margin: 0; color: var(--ink) !important; font: 600 40px/1.08 'Space Grotesk', sans-serif; }
         .lab-intro-copy { max-width: 540px; margin: 12px 0 0; color: #6d5d78; font-size: 14px; }
-        .lab-stamp { z-index: 1; flex: 0 0 auto; padding: 10px 13px; border: 1px solid #d5c1e2; color: #80549c; font: 11px 'DM Mono', monospace; }
         .lab-mascot { z-index: 1; display: grid; justify-items: center; gap: 7px; min-width: 108px; }
         .mascot-button { display: grid; place-items: center; width: 76px; height: 72px; padding: 5px; border: 0; background: transparent; cursor: pointer; }
         .signal-buddy { position: relative; display: block; width: 58px; height: 50px; border: 2px solid #9469aa; border-radius: 48% 52% 43% 46%; background: #e7cbed; box-shadow: 0 5px 0 #d9bce3; animation: buddy-float 2.8s ease-in-out infinite; }
@@ -130,7 +136,16 @@
         .tool-result { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; padding: 14px; border: 1px solid #e7d5ed; border-radius: 6px; background: linear-gradient(110deg, #fff0f6, #f1e8fa); }
         .tool-result-label { font: 10px 'DM Mono', monospace; text-transform: uppercase; }
         .tool-result output { display: block; font: 700 22px 'Space Grotesk', sans-serif; }
-        .tool-result.result-pulse output { animation: answer-pop .32s ease-out; }
+        .quiz-progress { height: 7px; overflow: hidden; border-radius: 99px; background: #eadfed; }
+        .quiz-progress-fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, #d77fa5, #9b74bb); transition: width .4s ease; }
+        .quiz-choice { width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid #e6d7e9; border-radius: 5px; background: #fffafd; color: #211a26; text-align: left; }
+        .quiz-choice:hover:not(:disabled) { border-color: #b78ed0; background: #f9f0fb; }
+        .quiz-choice:disabled { cursor: default; }
+        .quiz-choice.quiz-correct { border-color: #7d9e75; background: #edf5e9; color: #344b31; animation: answer-pop .32s ease-out; }
+        .quiz-choice.quiz-wrong { border-color: #d78da2; background: #fff0f4; color: #754154; animation: answer-wobble .3s ease-in-out; }
+        .quiz-result { animation: studio-enter .45s ease-out both; }
+        .code-snippet { overflow-x: auto; margin: 18px 0; padding: 18px; border: 1px solid #e5d7ed; border-radius: 6px; background: #f8f1fa; color: #34283f; font: 12px/1.8 'DM Mono', monospace; }
+        .code-bug { padding: 2px 6px; border-radius: 3px; background: #f8dce6; color: #963c5e; }
         main > div:last-child > .ai-console { background: #15111a !important; border-color: #352a3d !important; color: #f7effa !important; box-shadow: 0 16px 42px rgba(28, 17, 34, .18); }
         .ai-console h2 { color: #fff9ff !important; }
         .ai-console p { color: #c9bdcf !important; }
@@ -138,6 +153,9 @@
         main > div:last-child > .ai-console [class~="bg-indigo-950/40"] { background: #241d2a !important; border-color: #4a3b54 !important; color: #f0e5f5 !important; }
         main > div:last-child > .ai-console [class~="bg-slate-800/50"] { background: #211a27 !important; border-color: #3e3346 !important; color: #f6edf9 !important; }
         .ai-console strong { color: #e4b7f5 !important; }
+        .ai-console .solver-message { white-space: pre-wrap; line-height: 1.55; }
+        .ai-prompt { min-height: 32px; padding: 6px 9px; border: 1px solid #493a52; border-radius: 4px; background: #211a27; color: #eee1f3; font: 10px 'DM Mono', monospace; }
+        .ai-prompt:hover { border-color: #b78ed0; background: #2b2033; }
         main > div:last-child > .ai-console input { background: #211a27 !important; border-color: #493a52 !important; color: #fff9ff !important; }
         main > div:last-child > .ai-console input::placeholder { color: #a99aaf !important; }
         main > div:last-child > .ai-console [class~="bg-cyan-500"] { background: #d7b4e8 !important; color: #211a26 !important; }
@@ -156,6 +174,7 @@
         @keyframes led-pop { 50% { transform: scale(1.45); } }
         @keyframes led-glow { to { box-shadow: 0 0 0 6px rgba(183, 142, 208, .1), 0 0 23px rgba(177, 125, 204, .95); } }
         @keyframes answer-pop { 0% { transform: scale(.94); opacity: .55; } 70% { transform: scale(1.04); } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes answer-wobble { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
         main > div:first-child > div,
         main > div:last-child > div {
             background: rgba(255, 252, 254, .96) !important;
@@ -223,9 +242,10 @@
         svg path { stroke-dasharray: 8 6; animation: signal-flow 1.4s linear infinite; }
         @keyframes signal-flow { to { stroke-dashoffset: -28; } }
         @media (max-width: 700px) {
-            header { padding-inline: 18px !important; }
-            header h1 { font-size: 15px !important; }
-            header > div:last-child { gap: 8px !important; }
+            header { align-items: flex-start !important; flex-wrap: wrap; gap: 10px 16px; padding-inline: 18px !important; }
+            header h1 { font-size: 14px !important; }
+            header .header-control-group { width: 100%; justify-content: flex-end; gap: 7px; flex-wrap: wrap; }
+            .diagnostic-button, .sprint-button { min-height: 34px; padding: 7px 9px; font-size: 9px; }
             main { padding: 22px 16px 34px !important; }
             .lab-intro { align-items: flex-start; flex-direction: column; padding: 24px 21px; }
             .lab-intro h2 { font-size: 30px; }
@@ -251,13 +271,16 @@
             <div class="w-3 h-3 rounded-full bg-cyan-400 animate-ping"></div>
             <h1 class="font-bold text-xl tracking-wider bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">Chai Ki Chuski, Circuit Ki Kushti</h1>
         </div>
-        <div class="flex items-center space-x-6 text-sm">
-            <div class="hidden md:flex items-center space-x-2 text-slate-400 font-code bg-slate-800/60 px-3 py-1.5 rounded-lg border border-slate-700">
-                <span class="text-cyan-400">STATUS:</span> <span class="text-emerald-400">ACTIVE DIAGNOSTIC</span>
-            </div>
-            <div class="flex items-center space-x-2 bg-indigo-950/60 border border-indigo-800/50 px-3 py-1.5 rounded-lg text-indigo-300">
-                <span>⚡ Hackathon Mode</span>
-            </div>
+        <div class="header-control-group flex items-center text-sm">
+            <button type="button" class="diagnostic-button" @click="diagnosticActive = !diagnosticActive" :aria-pressed="diagnosticActive" :title="diagnosticSummary">
+                <span class="diagnostic-dot" :class="diagnosticActive ? 'is-active' : ''" aria-hidden="true"></span>
+                <span>STATUS:</span>
+                <span :class="diagnosticActive ? 'diagnostic-state-active' : 'diagnostic-state-paused'" x-text="diagnosticActive ? 'ACTIVE DIAGNOSTIC' : 'DIAGNOSTIC PAUSED'"></span>
+            </button>
+            <button type="button" class="sprint-button" :class="hackathonMode ? 'is-active' : ''" @click="toggleHackathonMode()" :aria-pressed="hackathonMode" :title="hackathonMode ? 'Pause the focus timer' : 'Start a 25-minute focus sprint'">
+                <span aria-hidden="true">⚡</span>
+                <span x-text="hackathonMode ? 'HACKATHON · ' + formatHackathonTime() : 'START HACKATHON'" aria-live="off"></span>
+            </button>
         </div>
     </header>
 
@@ -268,7 +291,7 @@
             <div>
                 <p class="lab-kicker">FIELD STUDY 01 / DIGITAL SYSTEMS</p>
                 <h2>Think in signals.<br>Learn by finding the fault.</h2>
-                <p class="lab-intro-copy">A hands-on ENTC workbench for logic, code, and the signals that connect them.</p>
+                <p class="lab-intro-copy">A hands-on ENTC workbench for logic, code, and real-world IoT simulations.</p>
             </div>
             <div class="lab-mascot">
                 <button class="mascot-button" type="button" @click="boopMascot()" aria-label="Make the signal sprite react" title="Give the signal sprite a boop">
@@ -291,6 +314,10 @@
                         <span>🔌 Logic Gate Fault-Injection</span>
                         <span class="text-xs bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded">Lab 1</span>
                     </button>
+                    <button @click="activeTab = 'iot'" :class="activeTab === 'iot' ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400' : 'border-slate-800 text-slate-400 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-xl border transition-all flex items-center justify-between font-medium text-sm">
+                        <span>🏠 Smart Home IoT Simulator</span>
+                        <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">New</span>
+                    </button>
                     <button @click="activeTab = 'ai'" :class="activeTab === 'ai' ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400 ai-nav-active' : 'border-slate-800 text-slate-400 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-xl border transition-all flex items-center justify-between font-medium text-sm">
                         <span>🤖 Socratic AI Troubleshooter</span>
                         <span class="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded">Active</span>
@@ -303,6 +330,14 @@
                         <span>🧰 Quick Bench Tools</span>
                         <span class="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded">2 tools</span>
                     </button>
+                    <button @click="activeTab = 'quiz'" :class="activeTab === 'quiz' ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400' : 'border-slate-800 text-slate-400 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-xl border transition-all flex items-center justify-between font-medium text-sm">
+                        <span>🧋 Circuit Chai Quiz</span>
+                        <span class="text-xs bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded">5 Qs</span>
+                    </button>
+                    <button @click="activeTab = 'coding'" :class="activeTab === 'coding' ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400' : 'border-slate-800 text-slate-400 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-xl border transition-all flex items-center justify-between font-medium text-sm">
+                        <span>💻 Arduino Debug Challenge</span>
+                        <span class="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded">New</span>
+                    </button>
                 </div>
             </div>
 
@@ -310,12 +345,12 @@
             <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5">
                 <div class="flex justify-between items-center mb-3">
                     <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Mission Progress</h2>
-                    <span class="text-xs font-code text-cyan-400">60% Completed</span>
+                    <span class="text-xs font-code text-cyan-400" x-text="progressPercent + '% Completed'"></span>
                 </div>
                 <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                    <div class="bg-gradient-to-r from-cyan-500 to-indigo-500 h-full w-3/5"></div>
+                    <div class="bg-gradient-to-r from-cyan-500 to-indigo-500 h-full transition-all" :style="{ width: progressPercent + '%' }"></div>
                 </div>
-                <p class="text-xs text-slate-400 mt-3 leading-relaxed">Fix 3 corrupted logic states to unlock the final Arduino IoT challenge.</p>
+                <p class="text-xs text-slate-400 mt-3 leading-relaxed">Try the gate, IoT alarm, bench tools, and quiz to build your progress.</p>
             </div>
         </div>
 
@@ -334,22 +369,19 @@
 
                 <!-- Interactive Gate Control Box -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-950 p-6 rounded-xl border border-slate-800/80 items-center text-center">
-                    <!-- Input A -->
                     <div class="space-y-2">
                         <span class="text-xs text-slate-400 font-code">INPUT A</span>
-                        <button @click="inputA = inputA ? 0 : 1" :class="inputA ? 'bg-cyan-500 text-slate-950 glow-cyan' : 'bg-slate-800 text-slate-400'" class="w-16 h-16 mx-auto rounded-xl font-bold text-xl transition-all flex items-center justify-center border border-slate-700" :aria-pressed="Boolean(inputA)">
+                        <button @click="inputA = inputA ? 0 : 1; checkGateCompletion()" :class="inputA ? 'bg-cyan-500 text-slate-950 glow-cyan' : 'bg-slate-800 text-slate-400'" class="w-16 h-16 mx-auto rounded-xl font-bold text-xl transition-all flex items-center justify-center border border-slate-700" :aria-pressed="Boolean(inputA)">
                             <span x-text="inputA"></span>
                         </button>
                     </div>
-                    <!-- Gate Icon -->
                     <div class="space-y-1">
                         <div class="inline-block px-4 py-2 bg-indigo-950 border border-indigo-800 rounded-lg text-indigo-300 font-code font-bold">AND GATE</div>
                         <div class="text-xs text-slate-400">Output = A AND B</div>
                     </div>
-                    <!-- Input B -->
                     <div class="space-y-2">
                         <span class="text-xs text-slate-400 font-code">INPUT B</span>
-                        <button @click="inputB = inputB ? 0 : 1" :class="inputB ? 'bg-cyan-500 text-slate-950 glow-cyan' : 'bg-slate-800 text-slate-400'" class="w-16 h-16 mx-auto rounded-xl font-bold text-xl transition-all flex items-center justify-center border border-slate-700" :aria-pressed="Boolean(inputB)">
+                        <button @click="inputB = inputB ? 0 : 1; checkGateCompletion()" :class="inputB ? 'bg-cyan-500 text-slate-950 glow-cyan' : 'bg-slate-800 text-slate-400'" class="w-16 h-16 mx-auto rounded-xl font-bold text-xl transition-all flex items-center justify-center border border-slate-700" :aria-pressed="Boolean(inputB)">
                             <span x-text="inputB"></span>
                         </button>
                     </div>
@@ -367,30 +399,87 @@
                 </div>
             </div>
 
+            <!-- TAB NEW: IOT SMART HOME SAFETY SIMULATOR -->
+            <div x-show="activeTab === 'iot'" x-transition class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-5">
+                <div>
+                    <p class="lab-kicker">REAL-WORLD APPLICATION / SENSOR AUTOMATION</p>
+                    <h2 class="text-lg font-bold text-slate-100">Smart Home IoT Safety Relay</h2>
+                    <p class="text-sm text-slate-400 mt-1">Adjust simulated sensor readings to test automated relay triggers. This demo is not calibrated safety equipment.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-950 p-5 rounded-xl border border-slate-800">
+                    <!-- Sensor Slider 1 -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-code">
+                            <span>ROOM TEMP SENSOR (LM35)</span>
+                            <span class="text-cyan-400" x-text="iotTemp + ' °C'"></span>
+                        </div>
+                        <input type="range" min="20" max="60" x-model.number="iotTemp" @input="checkIotTriggers()" aria-label="Simulated room temperature in degrees Celsius" class="w-full accent-purple-500 cursor-pointer">
+                        <p class="text-[11px] text-slate-400">Demo trigger: cooling relay above 38 °C</p>
+                    </div>
+
+                    <!-- Sensor Slider 2 -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-code">
+                            <span>GAS LEAK SENSOR (MQ-2)</span>
+                            <span class="text-cyan-400" x-text="iotGas + ' / 900 index'"></span>
+                        </div>
+                        <input type="range" min="100" max="900" step="50" x-model.number="iotGas" @input="checkIotTriggers()" aria-label="Simulated gas sensor index" class="w-full accent-rose-500 cursor-pointer">
+                        <p class="text-[11px] text-slate-400">Demo trigger: exhaust and buzzer above index 500</p>
+                    </div>
+                </div>
+
+                <!-- Actuator Status Dashboard -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-slate-950/50 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-code text-slate-400 uppercase">AC Cooling Relay</span>
+                            <div class="text-sm font-bold mt-0.5" :class="iotTemp > 38 ? 'text-emerald-400' : 'text-slate-400'" x-text="iotTemp > 38 ? 'ACTIVATED (ON)' : 'STANDBY (OFF)'"></div>
+                        </div>
+                        <div class="w-3.5 h-3.5 rounded-full" :class="iotTemp > 38 ? 'bg-emerald-400 animate-pulse' : 'bg-slate-700'"></div>
+                    </div>
+
+                    <div class="bg-slate-950/50 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] font-code text-slate-400 uppercase">Safety Alarm Buzzer</span>
+                            <div class="text-sm font-bold mt-0.5" :class="iotGas > 500 ? 'text-rose-500 animate-bounce' : 'text-slate-400'" x-text="iotGas > 500 ? 'ALARM TRIGGERED!' : 'NORMAL STATUS'"></div>
+                        </div>
+                        <div class="w-3.5 h-3.5 rounded-full" :class="iotGas > 500 ? 'bg-rose-500 animate-ping' : 'bg-slate-700'"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- TAB 2: SOCRATIC AI ASSISTANT -->
             <div x-show="activeTab === 'ai'" class="ai-console border rounded-2xl p-6 space-y-4">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-4">
                     <div>
-                        <h2 class="text-lg font-bold text-slate-100">Socratic lab coach</h2>
-                        <p class="text-xs text-slate-400">Offline demo responses for guided practice. No live AI service is connected.</p>
+                        <h2 class="text-lg font-bold text-slate-100">Circuit problem solver</h2>
+                        <p class="text-xs text-slate-400">Offline ENTC solver: worked calculations, logic gates, and guided fault checks. No cloud AI required.</p>
                     </div>
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
                 </div>
 
-                <!-- Chat Messages Box -->
-                <div class="h-64 overflow-y-auto space-y-3 pr-2 font-code text-xs">
-                    <template x-for="msg in chatMessages">
+                <div x-ref="solverMessages" class="h-64 overflow-y-auto space-y-3 pr-2 font-code text-xs" aria-live="polite">
+                    <template x-for="(msg, index) in chatMessages" :key="index">
                         <div :class="msg.sender === 'ai' ? 'bg-indigo-950/40 border-indigo-800/50 text-indigo-200' : 'bg-slate-800/50 border-slate-700 text-slate-200'" class="p-3 rounded-xl border">
-                            <strong class="text-cyan-400" x-text="msg.sender === 'ai' ? 'LAB_COACH > ' : 'YOU > '"></strong>
-                            <span x-text="msg.text"></span>
+                            <strong class="text-cyan-400" x-text="msg.sender === 'ai' ? 'CIRCUIT_SOLVER > ' : 'YOU > '"></strong>
+                            <span class="solver-message" x-text="msg.text"></span>
                         </div>
                     </template>
+                    <div x-show="solverThinking" class="rounded-xl border border-slate-800 bg-indigo-950/40 p-3 text-indigo-200" x-transition>
+                        <strong class="text-cyan-400">CIRCUIT_SOLVER &gt; </strong><span>Checking units, logic, and the likely fault...</span>
+                    </div>
                 </div>
 
-                <!-- Chat Input -->
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" class="ai-prompt" @click="askExample('12 V across 220 ohm, find current')">Solve: 12 V, 220 Ω</button>
+                    <button type="button" class="ai-prompt" @click="askExample('AND gate with A=1 and B=0')">Check: AND gate</button>
+                    <button type="button" class="ai-prompt" @click="askExample('My LED is not lighting')">Debug: dark LED</button>
+                </div>
+
                 <div class="flex space-x-2 pt-2">
-                    <input type="text" x-model="userQuery" @keyup.enter="sendQuery()" placeholder="Ask about resistors, logic gates, or troubleshooting..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-cyan-500 font-code text-slate-200">
-                    <button @click="sendQuery()" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold px-5 py-2.5 rounded-xl text-sm transition-all">Send</button>
+                    <input type="text" x-model="userQuery" @keyup.enter="sendQuery()" placeholder="Example: 12 V across 220 ohm, find current" class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-cyan-500 font-code text-slate-200" :disabled="solverThinking">
+                    <button @click="sendQuery()" :disabled="solverThinking || !userQuery.trim()" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold px-5 py-2.5 rounded-xl text-sm transition-all disabled:cursor-not-allowed disabled:opacity-50">Solve</button>
                 </div>
             </div>
 
@@ -404,7 +493,6 @@
                         <div class="w-px h-full bg-cyan-500"></div>
                         <div class="w-px h-full bg-cyan-500"></div>
                     </div>
-                    <!-- Simulated Wave SVG -->
                     <svg class="w-full h-24 text-cyan-400" fill="none" viewBox="0 0 500 100" stroke="currentColor" stroke-width="2">
                         <path d="M 0 50 Q 50 10, 100 50 T 200 50 T 300 50 T 400 50 T 500 50" class="animate-pulse" />
                     </svg>
@@ -416,6 +504,7 @@
                 </div>
             </div>
 
+            <!-- BENCH TOOLS -->
             <div x-show="activeTab === 'tools'" x-transition class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-5">
                 <div>
                     <p class="lab-kicker">POCKET REFERENCE / NO LAB COAT REQUIRED</p>
@@ -427,21 +516,21 @@
                         <h3 id="ohms-title" class="text-base font-bold">Ohm's law calculator</h3>
                         <p class="tool-description">Pick the value to solve. Enter the other two.</p>
                         <div class="tool-mode" role="group" aria-label="Choose what to calculate">
-                            <button type="button" @click="ohmMode = 'voltage'; pulseResult()" :class="ohmMode === 'voltage' ? 'tool-mode-active' : ''" :aria-pressed="ohmMode === 'voltage'">Voltage</button>
-                            <button type="button" @click="ohmMode = 'current'; pulseResult()" :class="ohmMode === 'current' ? 'tool-mode-active' : ''" :aria-pressed="ohmMode === 'current'">Current</button>
-                            <button type="button" @click="ohmMode = 'resistance'; pulseResult()" :class="ohmMode === 'resistance' ? 'tool-mode-active' : ''" :aria-pressed="ohmMode === 'resistance'">Resistance</button>
+                            <button type="button" @click="ohmMode = 'voltage'; markActivity('tools'); pulseResult()" :class="ohmMode === 'voltage' ? 'tool-mode-active' : ''" :aria-pressed="ohmMode === 'voltage'">Voltage</button>
+                            <button type="button" @click="ohmMode = 'current'; markActivity('tools'); pulseResult()" :class="ohmMode === 'current' ? 'tool-mode-active' : ''" :aria-pressed="ohmMode === 'current'">Current</button>
+                            <button type="button" @click="ohmMode = 'resistance'; markActivity('tools'); pulseResult()" :class="ohmMode === 'resistance' ? 'tool-mode-active' : ''" :aria-pressed="ohmMode === 'resistance'">Resistance</button>
                         </div>
                         <div class="tool-fields" x-show="ohmMode === 'voltage'" x-transition>
-                            <label class="tool-field">Current · A<input type="number" min="0" step="any" x-model.number="current" @input="pulseResult()" aria-label="Current in amperes"></label>
-                            <label class="tool-field">Resistance · Ω<input type="number" min="0" step="any" x-model.number="resistance" @input="pulseResult()" aria-label="Resistance in ohms"></label>
+                            <label class="tool-field">Current · A<input type="number" min="0" step="any" x-model.number="current" @input="markActivity('tools'); pulseResult()" aria-label="Current in amperes"></label>
+                            <label class="tool-field">Resistance · Ω<input type="number" min="0" step="any" x-model.number="resistance" @input="markActivity('tools'); pulseResult()" aria-label="Resistance in ohms"></label>
                         </div>
                         <div class="tool-fields" x-show="ohmMode === 'current'" x-transition>
-                            <label class="tool-field">Voltage · V<input type="number" min="0" step="any" x-model.number="voltage" @input="pulseResult()" aria-label="Voltage in volts"></label>
-                            <label class="tool-field">Resistance · Ω<input type="number" min="0" step="any" x-model.number="resistance" @input="pulseResult()" aria-label="Resistance in ohms"></label>
+                            <label class="tool-field">Voltage · V<input type="number" min="0" step="any" x-model.number="voltage" @input="markActivity('tools'); pulseResult()" aria-label="Voltage in volts"></label>
+                            <label class="tool-field">Resistance · Ω<input type="number" min="0" step="any" x-model.number="resistance" @input="markActivity('tools'); pulseResult()" aria-label="Resistance in ohms"></label>
                         </div>
                         <div class="tool-fields" x-show="ohmMode === 'resistance'" x-transition>
-                            <label class="tool-field">Voltage · V<input type="number" min="0" step="any" x-model.number="voltage" @input="pulseResult()" aria-label="Voltage in volts"></label>
-                            <label class="tool-field">Current · A<input type="number" min="0" step="any" x-model.number="current" @input="pulseResult()" aria-label="Current in amperes"></label>
+                            <label class="tool-field">Voltage · V<input type="number" min="0" step="any" x-model.number="voltage" @input="markActivity('tools'); pulseResult()" aria-label="Voltage in volts"></label>
+                            <label class="tool-field">Current · A<input type="number" min="0" step="any" x-model.number="current" @input="markActivity('tools'); pulseResult()" aria-label="Current in amperes"></label>
                         </div>
                         <div class="tool-result" :class="resultPulse ? 'result-pulse' : ''" aria-live="polite">
                             <span class="tool-result-label" x-text="ohmMode + ' result'"></span>
@@ -454,10 +543,10 @@
                         <h3 id="resistor-title" class="text-base font-bold">Resistor color decoder</h3>
                         <p class="tool-description">Choose the first three bands on a 4-band resistor.</p>
                         <div class="tool-fields">
-                            <label class="tool-field">Band 1<select x-model.number="resistorBandOne" @change="pulseResult()"><template x-for="color in bandColors" :key="color.name"><option :value="color.value" x-text="color.name"></option></template></select></label>
-                            <label class="tool-field">Band 2<select x-model.number="resistorBandTwo" @change="pulseResult()"><template x-for="color in bandColors" :key="color.name"><option :value="color.value" x-text="color.name"></option></template></select></label>
-                            <label class="tool-field">Multiplier<select x-model.number="resistorMultiplier" @change="pulseResult()"><template x-for="multiplier in multipliers" :key="multiplier.name"><option :value="multiplier.value" x-text="multiplier.name"></option></template></select></label>
-                            <label class="tool-field">Tolerance<select x-model="resistorTolerance"><option value="gold">Gold · ±5%</option><option value="silver">Silver · ±10%</option></select></label>
+                            <label class="tool-field">Band 1<select x-model.number="resistorBandOne" @change="markActivity('tools'); pulseResult()"><template x-for="color in bandColors" :key="color.name"><option :value="color.value" x-text="color.name"></option></template></select></label>
+                            <label class="tool-field">Band 2<select x-model.number="resistorBandTwo" @change="markActivity('tools'); pulseResult()"><template x-for="color in bandColors" :key="color.name"><option :value="color.value" x-text="color.name"></option></template></select></label>
+                            <label class="tool-field">Multiplier<select x-model.number="resistorMultiplier" @change="markActivity('tools'); pulseResult()"><template x-for="multiplier in multipliers" :key="multiplier.name"><option :value="multiplier.value" x-text="multiplier.name"></option></template></select></label>
+                            <label class="tool-field">Tolerance<select x-model="resistorTolerance" @change="markActivity('tools'); pulseResult()"><option value="gold">Gold · ±5%</option><option value="silver">Silver · ±10%</option></select></label>
                         </div>
                         <div class="resistor-preview" aria-label="Resistor color band preview">
                             <span class="resistor-wire"></span>
@@ -478,125 +567,341 @@
                 </div>
             </div>
 
-        </div>
-    </main>
+            <div x-show="activeTab === 'quiz'" x-transition class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-5">
+                <div>
+                    <p class="lab-kicker">FIVE QUESTIONS / ZERO LAB COATS</p>
+                    <h2 class="text-lg font-bold text-slate-100">Circuit Chai Quiz</h2>
+                    <p class="text-sm text-slate-400 mt-1">Quick first-year ENTC checks. Guessing is an officially recognized engineering method.</p>
+                </div>
+                <div class="quiz-progress" role="progressbar" :aria-valuenow="quizIndex + (quizAnswered || quizComplete ? 1 : 0)" aria-valuemin="0" :aria-valuemax="quizQuestions.length">
+                    <div class="quiz-progress-fill" :style="{ width: ((quizIndex + (quizAnswered || quizComplete ? 1 : 0)) / quizQuestions.length * 100) + '%' }"></div>
+                </div>
+                <section x-show="!quizComplete" aria-live="polite">
+                    <p class="mb-2 text-xs font-code text-slate-400" x-text="'QUESTION ' + String(quizIndex + 1).padStart(2, '0') + ' / ' + quizQuestions.length"></p>
+                    <h3 class="mb-5 text-lg font-bold text-slate-100" x-text="quizQuestions[quizIndex].prompt"></h3>
+                    <div class="grid gap-3">
+                        <template x-for="(choice, choiceIndex) in quizQuestions[quizIndex].options" :key="choice">
+                            <button type="button" class="quiz-choice" @click="submitQuizAnswer(choiceIndex)" :disabled="quizAnswered" :class="quizAnswered && choiceIndex === quizQuestions[quizIndex].answer ? 'quiz-correct' : quizAnswered && choiceIndex === quizSelected ? 'quiz-wrong' : ''" x-text="choice"></button>
+                        </template>
+                    </div>
+                    <div class="mt-4 flex flex-wrap items-center justify-between gap-3" x-show="quizAnswered" x-transition>
+                        <p class="m-0 text-sm text-slate-400" x-text="quizFeedback"></p>
+                        <button type="button" class="rounded-lg bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition-all hover:bg-cyan-400" @click="nextQuizQuestion()" x-text="quizIndex === quizQuestions.length - 1 ? 'See my score' : 'Next question →'"></button>
+                    </div>
+                </section>
+                <section x-show="quizComplete" x-transition class="quiz-result rounded-lg border border-slate-800 bg-slate-950/50 p-6 text-center" aria-live="polite">
+                    <p class="lab-kicker">QUIZ COMPLETE / CHAI BREAK EARNED</p>
+                    <h3 class="text-2xl font-bold text-slate-100" x-text="quizScore === quizQuestions.length ? 'Full marks! The circuit fears you.' : quizScore >= 3 ? 'Solid work, engineer-in-training!' : 'One more round and you’ve got this!' "></h3>
+                    <p class="mt-3 text-sm text-slate-400" x-text="'You got ' + quizScore + ' out of ' + quizQuestions.length + ' correct.'"></p>
+                    <button type="button" class="mt-5 rounded-lg bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition-all hover:bg-cyan-400" @click="resetQuiz()">Play again</button>
+                </section>
+            </div>
 
-    <!-- FOOTER -->
-    <footer class="border-t border-slate-800 py-4 text-center text-xs text-slate-500 font-code">
-        CHAKRAVYUH AI VIBE CODING CHALLENGE // SMART ENTC INNOVATION PLATFORM
-    </footer>
+            <div x-show="activeTab === 'coding'" x-transition class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-5">
+                <div>
+                    <p class="lab-kicker">ARDUINO MINI LAB / DEBUG THE FIRMWARE</p>
+                    <h2 class="text-lg font-bold text-slate-100">The LED is ghosting you</h2>
+                    <p class="text-sm text-slate-400 mt-1">The LED is wired to digital pin 9, but the sketch never turns it on. Find the pin-configuration bug.</p>
+                </div>
+                <pre class="code-snippet"><code>const int ledPin = 9;
 
-    <!-- ALPINE JS STATE LOGIC -->
-    <script>
-        function appData() {
-            return {
-                activeTab: 'circuit',
-                inputA: 1,
-                inputB: 0,
-                mascotBop: false,
-                mascotLine: '',
-                ohmMode: 'voltage',
-                voltage: 5,
-                current: 0.02,
-                resistance: 220,
-                ohmUnits: { voltage: 'V', current: 'A', resistance: 'Ω' },
-                ohmFormulas: { voltage: 'V = I × R', current: 'I = V ÷ R', resistance: 'R = V ÷ I' },
-                resultPulse: false,
-                resistorBandOne: 4,
-                resistorBandTwo: 7,
-                resistorMultiplier: 1000,
-                resistorTolerance: 'gold',
-                bandColors: [
-                    { name: 'Black', value: 0, hex: '#28242b' },
-                    { name: 'Brown', value: 1, hex: '#79513b' },
-                    { name: 'Red', value: 2, hex: '#d34f61' },
-                    { name: 'Orange', value: 3, hex: '#e88948' },
-                    { name: 'Yellow', value: 4, hex: '#e7ca55' },
-                    { name: 'Green', value: 5, hex: '#5d9b70' },
-                    { name: 'Blue', value: 6, hex: '#567dbb' },
-                    { name: 'Violet', value: 7, hex: '#8963a9' },
-                    { name: 'Gray', value: 8, hex: '#8f8b96' },
-                    { name: 'White', value: 9, hex: '#f5f0e9' }
-                ],
-                multipliers: [
-                    { name: 'Black · ×1', value: 1, hex: '#28242b' },
-                    { name: 'Brown · ×10', value: 10, hex: '#79513b' },
-                    { name: 'Red · ×100', value: 100, hex: '#d34f61' },
-                    { name: 'Orange · ×1k', value: 1000, hex: '#e88948' },
-                    { name: 'Yellow · ×10k', value: 10000, hex: '#e7ca55' },
-                    { name: 'Green · ×100k', value: 100000, hex: '#5d9b70' },
-                    { name: 'Blue · ×1M', value: 1000000, hex: '#567dbb' },
-                    { name: 'Violet · ×10M', value: 10000000, hex: '#8963a9' },
-                    { name: 'Gold · ×0.1', value: 0.1, hex: '#c99a3b' },
-                    { name: 'Silver · ×0.01', value: 0.01, hex: '#a9a9ad' }
-                ],
-                userQuery: '',
-                chatMessages: [
-                    { sender: 'ai', text: 'Welcome to Chai Ki Chuski, Circuit Ki Kushti. Chai leke aao, circuit suljhao!' }
-                ],
-                get ohmResult() {
-                    const requiredInputs = {
-                        voltage: ['current', 'resistance'],
-                        current: ['voltage', 'resistance'],
-                        resistance: ['voltage', 'current']
-                    }[this.ohmMode];
-                    if (requiredInputs.some((key) => this[key] === '' || this[key] === null || !Number.isFinite(Number(this[key])))) return null;
-                    const voltage = Number(this.voltage);
-                    const current = Number(this.current);
-                    const resistance = Number(this.resistance);
-                    let result = null;
-                    if (this.ohmMode === 'voltage' && current >= 0 && resistance > 0) result = current * resistance;
-                    if (this.ohmMode === 'current' && voltage >= 0 && resistance > 0) result = voltage / resistance;
-                    if (this.ohmMode === 'resistance' && voltage >= 0 && current > 0) result = voltage / current;
-                    return Number.isFinite(result) ? result : null;
-                },
-                get multiplierColor() {
-                    return this.multipliers.find((item) => item.value === Number(this.resistorMultiplier)) || this.multipliers[0];
-                },
-                formatNumber(value) {
-                    return Number(value.toPrecision(4)).toString();
-                },
-                formatResistance() {
-                    const value = (this.resistorBandOne * 10 + this.resistorBandTwo) * this.resistorMultiplier;
-                    if (value >= 1000000) return `${this.formatNumber(value / 1000000)} MΩ`;
-                    if (value >= 1000) return `${this.formatNumber(value / 1000)} kΩ`;
-                    return `${this.formatNumber(value)} Ω`;
-                },
-                pulseResult() {
-                    this.resultPulse = false;
-                    requestAnimationFrame(() => { this.resultPulse = true; });
-                    setTimeout(() => { this.resultPulse = false; }, 400);
-                },
-                sendQuery() {
-                    if (!this.userQuery.trim()) return;
-                    this.chatMessages.push({ sender: 'user', text: this.userQuery });
-                    let q = this.userQuery.toLowerCase();
-                    setTimeout(() => {
-                        let reply = "Remember, true engineers inspect the circuit schematic before writing code. Check your pull-down resistors.";
-                        if (q.includes('resistor')) reply = "A pull-down resistor ensures the input pin drops to a known logic LOW when the switch is open. Good thought!";
-                        if (q.includes('gate')) reply = "Logic gates form the bedrock of digital systems. Verify your truth table inputs!";
-                        this.chatMessages.push({ sender: 'ai', text: reply });
-                    }, 500);
-                    this.userQuery = '';
-                },
-                triggerAIHint() {
-                    this.activeTab = 'ai';
-                    this.chatMessages.push({ sender: 'ai', text: '💡 HINT FOR AND-GATE LAB: Notice how input B is currently 0. An AND gate outputs 1 ONLY when both inputs are high!' });
-                },
-                boopMascot() {
-                    const reactions = [
-                        'Beep boop. I am extremely qualified.',
-                        'I came, I saw, I conducted.',
-                        'Current mood: positively charged.',
-                        'That was a shocking experience.'
-                    ];
-                    this.mascotBop = false;
-                    requestAnimationFrame(() => { this.mascotBop = true; });
-                    this.mascotLine = reactions[Math.floor(Math.random() * reactions.length)];
-                    setTimeout(() => { this.mascotBop = false; }, 650);
-                }
+void setup() {
+  pinMode(ledPin, <span class="code-bug">INPUT</span>);  // suspicious...
+}
+
+void loop() {
+  digitalWrite(ledPin, HIGH);
+}</code></pre>
+                <p class="text-sm font-semibold text-slate-100">What should replace <code class="font-code">INPUT</code>?</p>
+                <div class="grid gap-3">
+                    <template x-for="option in codeChallengeOptions" :key="option.value">
+                        <button type="button" class="quiz-choice" @click="submitCodeChallenge(option.value)" :disabled="codeChallengeAnswered" :class="codeChallengeAnswered && option.value === 'OUTPUT' ? 'quiz-correct' : codeChallengeAnswered && option.value === codeChallengeSelected ? 'quiz-wrong' : ''" x-text="option.label"></button>
+                    </template>
+                </div>
+                <div x-show="codeChallengeAnswered" x-transition class="flex flex-wrap items-center justify-between gap-3" aria-live="polite">
+                    <p class="m-0 text-sm text-slate-400" x-text="codeChallengeFeedback"></p>
+                    <button type="button" class="rounded-lg bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition-all hover:bg-cyan-400" @click="resetCodeChallenge()" x-text="codeChallengeSolved ? 'Run again' : 'Try again'"></button>
+                </div>
+                <p class="text-xs text-slate-400">Code-reading practice only; it doesn’t upload or run code on a physical Arduino.</p>
+            </div>
+
+            </div>
+        </main>
+
+        <footer class="border-t border-slate-800 py-4 text-center text-xs text-slate-500 font-code">
+            CHAKRAVYUH AI VIBE CODING CHALLENGE // SMART ENTC INNOVATION PLATFORM
+        </footer>
+
+        <script>
+            function appData() {
+                return {
+                    activeTab: 'circuit',
+                    inputA: 1,
+                    inputB: 0,
+                    iotTemp: 25,
+                    iotGas: 200,
+                    diagnosticActive: true,
+                    hackathonMode: true,
+                    hackathonSeconds: 1500,
+                    hackathonTimer: null,
+                    completedActivities: [],
+                    mascotBop: false,
+                    mascotLine: '',
+                    ohmMode: 'voltage',
+                    voltage: 5,
+                    current: 0.02,
+                    resistance: 220,
+                    ohmUnits: { voltage: 'V', current: 'A', resistance: 'Ω' },
+                    ohmFormulas: { voltage: 'V = I × R', current: 'I = V ÷ R', resistance: 'R = V ÷ I' },
+                    resultPulse: false,
+                    resistorBandOne: 4,
+                    resistorBandTwo: 7,
+                    resistorMultiplier: 1000,
+                    resistorTolerance: 'gold',
+                    solverThinking: false,
+                    userQuery: '',
+                    quizIndex: 0,
+                    quizScore: 0,
+                    quizSelected: null,
+                    quizAnswered: false,
+                    quizComplete: false,
+                    quizFeedback: '',
+                    codeChallengeAnswered: false,
+                    codeChallengeSolved: false,
+                    codeChallengeSelected: '',
+                    codeChallengeFeedback: '',
+                    codeChallengeOptions: [
+                        { value: 'INPUT_PULLUP', label: 'INPUT_PULLUP' },
+                        { value: 'OUTPUT', label: 'OUTPUT' },
+                        { value: 'INPUT', label: 'Leave it as INPUT' }
+                    ],
+                    quizQuestions: [
+                        { prompt: 'When does an AND gate output 1?', options: ['When either input is 1', 'Only when both inputs are 1', 'Only when both inputs are 0', 'Whenever the LED feels like it'], answer: 1, explanation: 'Correct: AND needs both inputs high.' },
+                        { prompt: 'A 12 V supply is connected across a 6 Ω resistor. What current flows?', options: ['0.5 A', '2 A', '18 A', '72 A'], answer: 1, explanation: 'I = V ÷ R = 12 ÷ 6 = 2 A.' },
+                        { prompt: 'What unit measures signal frequency?', options: ['Ohm', 'Volt', 'Farad', 'Hertz'], answer: 3, explanation: 'Frequency is measured in hertz (Hz), or cycles per second.' },
+                        { prompt: 'Which 4-band resistor colors represent 4.7 kΩ?', options: ['Yellow, violet, red', 'Red, violet, yellow', 'Yellow, green, orange', 'Brown, black, red'], answer: 0, explanation: 'Yellow = 4, violet = 7, and red = ×100. That gives 4,700 Ω.' },
+                        { prompt: 'What does a pull-down resistor do?', options: ['Holds an open digital input at LOW', 'Increases battery voltage', 'Stores program code', 'Makes every LED brighter'], answer: 0, explanation: 'It holds an input at a known LOW instead of letting it float.' }
+                    ],
+                    bandColors: [
+                        { name: 'Black', value: 0, hex: '#28242b' }, { name: 'Brown', value: 1, hex: '#79513b' },
+                        { name: 'Red', value: 2, hex: '#d34f61' }, { name: 'Orange', value: 3, hex: '#e88948' },
+                        { name: 'Yellow', value: 4, hex: '#e7ca55' }, { name: 'Green', value: 5, hex: '#5d9b70' },
+                        { name: 'Blue', value: 6, hex: '#567dbb' }, { name: 'Violet', value: 7, hex: '#8963a9' },
+                        { name: 'Gray', value: 8, hex: '#8f8b96' }, { name: 'White', value: 9, hex: '#f5f0e9' }
+                    ],
+                    multipliers: [
+                        { name: 'Black · ×1', value: 1, hex: '#28242b' }, { name: 'Brown · ×10', value: 10, hex: '#79513b' },
+                        { name: 'Red · ×100', value: 100, hex: '#d34f61' }, { name: 'Orange · ×1k', value: 1000, hex: '#e88948' },
+                        { name: 'Yellow · ×10k', value: 10000, hex: '#e7ca55' }, { name: 'Green · ×100k', value: 100000, hex: '#5d9b70' },
+                        { name: 'Blue · ×1M', value: 1000000, hex: '#567dbb' }, { name: 'Violet · ×10M', value: 10000000, hex: '#8963a9' },
+                        { name: 'Gold · ×0.1', value: 0.1, hex: '#c99a3b' }, { name: 'Silver · ×0.01', value: 0.01, hex: '#a9a9ad' }
+                    ],
+                    chatMessages: [{ sender: 'ai', text: 'Circuit solver ready. Try “12 V across 220 ohm, find current” or describe what your circuit is doing.' }],
+                    init() {
+                        this.startHackathonClock();
+                    },
+                    get progressPercent() {
+                        return Math.round(this.completedActivities.length / 5 * 100);
+                    },
+                    get diagnosticSummary() {
+                        const output = this.inputA && this.inputB ? 1 : 0;
+                        return `AND gate: A=${this.inputA}, B=${this.inputB}, output=${output}.`;
+                    },
+                    get ohmResult() {
+                        const required = { voltage: ['current', 'resistance'], current: ['voltage', 'resistance'], resistance: ['voltage', 'current'] }[this.ohmMode];
+                        if (required.some((key) => this[key] === '' || !Number.isFinite(Number(this[key])))) return null;
+                        const voltage = Number(this.voltage), current = Number(this.current), resistance = Number(this.resistance);
+                        let result = null;
+                        if (this.ohmMode === 'voltage' && current >= 0 && resistance > 0) result = current * resistance;
+                        if (this.ohmMode === 'current' && voltage >= 0 && resistance > 0) result = voltage / resistance;
+                        if (this.ohmMode === 'resistance' && voltage >= 0 && current > 0) result = voltage / current;
+                        return Number.isFinite(result) ? result : null;
+                    },
+                    get multiplierColor() {
+                        return this.multipliers.find((item) => item.value === Number(this.resistorMultiplier)) || this.multipliers[0];
+                    },
+                    markActivity(name) {
+                        if (!this.completedActivities.includes(name)) this.completedActivities.push(name);
+                    },
+                    checkGateCompletion() {
+                        if (this.inputA && this.inputB) this.markActivity('circuit');
+                    },
+                    checkIotTriggers() {
+                        if (this.iotTemp > 38 || this.iotGas > 500) this.markActivity('iot');
+                    },
+                    formatHackathonTime() {
+                        return `${String(Math.floor(this.hackathonSeconds / 60)).padStart(2, '0')}:${String(this.hackathonSeconds % 60).padStart(2, '0')}`;
+                    },
+                    startHackathonClock() {
+                        if (this.hackathonTimer !== null) return;
+                        this.hackathonTimer = window.setInterval(() => {
+                            if (this.hackathonSeconds <= 1) {
+                                this.hackathonSeconds = 0;
+                                this.hackathonMode = false;
+                                window.clearInterval(this.hackathonTimer);
+                                this.hackathonTimer = null;
+                            } else this.hackathonSeconds -= 1;
+                        }, 1000);
+                    },
+                    toggleHackathonMode() {
+                        if (this.hackathonMode) {
+                            this.hackathonMode = false;
+                            window.clearInterval(this.hackathonTimer);
+                            this.hackathonTimer = null;
+                        } else {
+                            if (this.hackathonSeconds === 0) this.hackathonSeconds = 1500;
+                            this.hackathonMode = true;
+                            this.startHackathonClock();
+                        }
+                    },
+                    formatNumber(value) { return Number(value.toPrecision(4)).toString(); },
+                    formatResistance() {
+                        const value = (this.resistorBandOne * 10 + this.resistorBandTwo) * this.resistorMultiplier;
+                        if (value >= 1000000) return `${this.formatNumber(value / 1000000)} MΩ`;
+                        if (value >= 1000) return `${this.formatNumber(value / 1000)} kΩ`;
+                        return `${this.formatNumber(value)} Ω`;
+                    },
+                    pulseResult() {
+                        this.resultPulse = false;
+                        requestAnimationFrame(() => { this.resultPulse = true; });
+                        setTimeout(() => { this.resultPulse = false; }, 400);
+                    },
+                    parseElectricalValues(query) {
+                        const values = {};
+                        const pattern = /(\d+(?:\.\d+)?)\s*(mA|A|mV|V|kOhms?|Ohms?|kΩ|Ω)(?=$|[\s,;).?!])/gi;
+                        for (const match of query.matchAll(pattern)) {
+                            const amount = Number(match[1]), unit = match[2].toLowerCase();
+                            if (unit === 'mv') values.voltage = amount / 1000;
+                            else if (unit === 'v') values.voltage = amount;
+                            else if (unit === 'ma') values.current = amount / 1000;
+                            else if (unit === 'a') values.current = amount;
+                            else if (['kω', 'kohm', 'kohms'].includes(unit)) values.resistance = amount * 1000;
+                            else if (['ω', 'ohm', 'ohms'].includes(unit)) values.resistance = amount;
+                        }
+                        return values;
+                    },
+                    solveProblem(query) {
+                        const text = query.toLowerCase();
+                        const gate = text.match(/\b(nand|nor|xnor|xor|and|or|not)\s*(?:logic\s*)?gate\b/);
+                        if (gate) {
+                            const gateType = gate[1];
+                            const outputFor = (inputA, inputB) => gateType === 'not' ? 1 - inputA
+                                : gateType === 'and' ? inputA & inputB
+                                    : gateType === 'or' ? inputA | inputB
+                                        : gateType === 'nand' ? 1 - (inputA & inputB)
+                                            : gateType === 'nor' ? 1 - (inputA | inputB)
+                                                : gateType === 'xnor' ? 1 - (inputA ^ inputB) : inputA ^ inputB;
+                            const a = text.match(/\ba\s*[:=]\s*([01])\b/), b = text.match(/\bb\s*[:=]\s*([01])\b/);
+                            if (a && (b || gate[1] === 'not')) {
+                                const av = Number(a[1]), bv = b ? Number(b[1]) : 0;
+                                const output = outputFor(av, bv);
+                                return `RESULT: ${gateType.toUpperCase()} gate\nInputs: A=${av}${b ? `, B=${bv}` : ''}\nOutput: Y=${output}\n${gateType.toUpperCase()} logic evaluated from the inputs you gave.`;
+                            }
+                            const rows = gateType === 'not'
+                                ? [0, 1].map((inputA) => `${inputA}   | ${outputFor(inputA, 0)}`)
+                                : [[0, 0], [0, 1], [1, 0], [1, 1]].map(([inputA, inputB]) => `${inputA} ${inputB} | ${outputFor(inputA, inputB)}`);
+                            return `TRUTH TABLE: ${gateType.toUpperCase()}\n${gateType === 'not' ? 'A | Y' : 'A B | Y'}\n${rows.join('\n')}\n${gateType.toUpperCase()} output follows directly from its truth table.`;
+                        }
+                        const values = this.parseElectricalValues(query);
+                        let target = /\b(current|amperes?|amps?)\b|find\s+i\b/.test(text) ? 'current' : /\b(voltage|volts?)\b|find\s+v\b/.test(text) ? 'voltage' : /\b(resistance|ohms?)\b|find\s+r\b/.test(text) ? 'resistance' : null;
+                        if (target) {
+                            const needs = { current: ['voltage', 'resistance'], voltage: ['current', 'resistance'], resistance: ['voltage', 'current'] }[target];
+                            if (needs.some((key) => values[key] === undefined || (key !== 'voltage' && values[key] <= 0))) return 'I need two values with units to solve this. Example: “12 V across 220 ohm, find current.”';
+                            const result = target === 'current' ? values.voltage / values.resistance : target === 'voltage' ? values.current * values.resistance : values.voltage / values.current;
+                            if (!Number.isFinite(result)) return 'That calculation is outside the supported range. Check the values and units.';
+                            const unit = { voltage: 'V', current: 'A', resistance: 'Ω' }[target];
+                            const formula = { voltage: 'V = I × R', current: 'I = V ÷ R', resistance: 'R = V ÷ I' }[target];
+                            return `SOLVED: ${target.toUpperCase()}\nFormula: ${formula}\nAnswer: ${this.formatNumber(result)} ${unit}\nAssuming ideal components and steady DC.`;
+                        }
+                        if (/\bled\b/.test(text) && /\b(not|dark|off|wont|doesnt|isnt)\b|won't|doesn't|isn't|not\s+(lighting|glowing|working)/.test(text)) return 'LED CHECKLIST\n1. Check polarity: long leg (anode) toward positive; short leg (cathode) toward ground.\n2. Confirm a series resistor is present.\n3. Verify supply and common ground.\n4. Check the code pin matches the physical pin.\n5. Test the LED and resistor separately.\nShare your board, pin number, and wiring for a more specific diagnosis.';
+                        if (/\b(floating|random input|unstable input)\b/.test(text)) return 'LIKELY CAUSE: a floating digital input. Use INPUT_PULLUP or an external pull-up/pull-down resistor, then check whether the switch logic is active-low.';
+                        if (/\bpull.?down\b/.test(text)) return 'A pull-down resistor connects an input to ground through a resistor. When the switch is open, it holds the input at a known LOW instead of letting it float. A common starting value is 10 kΩ, subject to your circuit and datasheet.';
+                        if (/\b(frequency|hertz|hz)\b/.test(text)) return 'Frequency is the number of cycles per second, measured in hertz (Hz). For a periodic signal, f = 1 ÷ T, where T is the period in seconds. Example: a 0.02 s period is 50 Hz.';
+                        if (/\b(what is|explain|meaning of)\b/.test(text) && /\b(resistor|resistance)\b/.test(text)) return 'A resistor limits current and creates voltage drops in a circuit. Resistance is measured in ohms (Ω); for a simple resistor, V = I × R.';
+                        if (/\bsensor\b/.test(text)) return 'SENSOR CHECKLIST\n1. Confirm rated supply voltage.\n2. Share ground with the board.\n3. Match the signal pin in wiring and code.\n4. Print the raw reading before converting units.\nTell me the sensor model and observed value for a narrower check.';
+                        if (/\b(arduino|pinmode|semicolon|compile error)\b/.test(text)) return 'ARDUINO CHECK\n1. Read the first compiler error.\n2. Check statement semicolons and balanced braces.\n3. Make pinMode() match the pin used by read/write calls.\nPaste the exact error and nearby code for a targeted diagnosis.';
+                        return 'I can solve Ohm’s law, logic gate outputs, and common LED, sensor, floating-input, and Arduino issues. Include values with units or describe the symptom and wiring.';
+                    },
+                    askExample(query) { this.userQuery = query; this.sendQuery(); },
+                    sendQuery() {
+                        const query = this.userQuery.trim();
+                        if (!query || this.solverThinking) return;
+                        this.chatMessages.push({ sender: 'user', text: query });
+                        this.userQuery = '';
+                        this.solverThinking = true;
+                        this.scrollSolverMessages();
+                        setTimeout(() => {
+                            try {
+                                this.chatMessages.push({ sender: 'ai', text: this.solveProblem(query) });
+                            } catch (error) {
+                                this.chatMessages.push({ sender: 'ai', text: 'I could not parse that problem. Include the component, values, units, and what you want to find.' });
+                            } finally {
+                                this.solverThinking = false;
+                                this.scrollSolverMessages();
+                            }
+                        }, 250);
+                    },
+                    scrollSolverMessages() {
+                        this.$nextTick(() => {
+                            const messages = this.$refs.solverMessages;
+                            if (messages) messages.scrollTop = messages.scrollHeight;
+                        });
+                    },
+                    triggerAIHint() {
+                        this.activeTab = 'ai';
+                        this.chatMessages.push({ sender: 'ai', text: `AND gate check: A=${this.inputA}, B=${this.inputB}. Output is ${this.inputA && this.inputB ? 1 : 0}; both inputs must be HIGH for an AND gate to output 1.` });
+                        this.scrollSolverMessages();
+                    },
+                    submitQuizAnswer(index) {
+                        if (this.quizAnswered || this.quizComplete) return;
+                        this.quizSelected = index;
+                        this.quizAnswered = true;
+                        const question = this.quizQuestions[this.quizIndex];
+                        if (index === question.answer) this.quizScore += 1;
+                        this.quizFeedback = question.explanation;
+                    },
+                    nextQuizQuestion() {
+                        if (!this.quizAnswered) return;
+                        if (this.quizIndex === this.quizQuestions.length - 1) {
+                            this.quizComplete = true;
+                            this.markActivity('quiz');
+                        } else {
+                            this.quizIndex += 1;
+                            this.quizSelected = null;
+                            this.quizAnswered = false;
+                            this.quizFeedback = '';
+                        }
+                    },
+                    resetQuiz() {
+                        this.quizIndex = 0; this.quizScore = 0; this.quizSelected = null;
+                        this.quizAnswered = false; this.quizComplete = false; this.quizFeedback = '';
+                    },
+                    submitCodeChallenge(answer) {
+                        if (this.codeChallengeAnswered) return;
+                        this.codeChallengeSelected = answer;
+                        this.codeChallengeAnswered = true;
+                        this.codeChallengeSolved = answer === 'OUTPUT';
+                        if (this.codeChallengeSolved) {
+                            this.codeChallengeFeedback = 'Correct. pinMode sets the pin direction: the board needs OUTPUT before digitalWrite can drive the LED HIGH.';
+                            this.markActivity('coding');
+                        } else {
+                            this.codeChallengeFeedback = 'Not quite. The pin must send a signal out to the LED. Think about its direction.';
+                        }
+                    },
+                    resetCodeChallenge() {
+                        this.codeChallengeAnswered = false;
+                        this.codeChallengeSelected = '';
+                        this.codeChallengeFeedback = '';
+                    },
+                    boopMascot() {
+                        const lines = ['Beep boop. I am extremely qualified.', 'I came, I saw, I conducted.', 'Current mood: positively charged.', 'That was a shocking experience.'];
+                        this.mascotBop = false;
+                        requestAnimationFrame(() => { this.mascotBop = true; });
+                        this.mascotLine = lines[Math.floor(Math.random() * lines.length)];
+                        setTimeout(() => { this.mascotBop = false; }, 650);
+                    }
+                };
             }
-        }
-    </script>
-</body>
-</html>
+        </script>
+        </body>
+        </html>
