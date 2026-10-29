@@ -11,15 +11,15 @@
     <style>
         :root {
             color-scheme: light;
-            --paper: #fff5f9;
-            --ink: #34283f;
-            --muted: #74677d;
-            --line: #ead9e9;
-            --green: #8d68ad;
-            --green-dark: #65487c;
-            --lavender: #f0e7f6;
-            --coral: #d77fa5;
-            --lime: #b17dcc;
+            --paper: #fff4f6;
+            --ink: #351620;
+            --muted: #735660;
+            --line: #f0cdd6;
+            --green: #d32f57;
+            --green-dark: #941c3c;
+            --lavender: #ffe2e9;
+            --coral: #ed6284;
+            --lime: #ffafc0;
         }
 
         * { box-sizing: border-box; }
@@ -261,6 +261,75 @@
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
         }
+        body { background-image: radial-gradient(#efc1cb 0.7px, transparent 0.7px) !important; }
+        body::before { border-color: rgba(211, 47, 87, .16); box-shadow: 0 0 0 34px rgba(211, 47, 87, .04), 0 0 0 68px rgba(237, 98, 132, .035); }
+        header [class~="bg-slate-800/60"] { background: #ffe8ed !important; }
+        header [class~="bg-indigo-950/60"] { background: #ffe2e9 !important; border-color: #efbdca !important; color: #941c3c !important; }
+        .diagnostic-button:hover, .sprint-button:hover { border-color: #e889a0; background: #fff0f3; }
+        .sprint-button.is-active { border-color: #efbdca; background: #ffe2e9; color: #76172f; }
+        .lab-intro { border-color: #efbdca; }
+        .lab-intro::after { border-color: rgba(211, 47, 87, .22); box-shadow: 0 0 0 25px rgba(211, 47, 87, .05), 0 0 0 50px rgba(237, 98, 132, .04); }
+        .lab-kicker { color: #a51f45; }
+        .lab-intro-copy { color: #734a57; }
+        .signal-buddy { z-index: 0; width: 58px; height: 50px; border-color: #9c193d; border-radius: 46% 46% 50% 50%; background: #df3159; box-shadow: 0 5px 0 #c8214b; }
+        .signal-buddy::before { display: none; }
+        .buddy-antenna { display: none; }
+        .spider-leg { position: absolute; z-index: 0; width: 18px; height: 2px; border-radius: 2px; background: #9c193d; }
+        .spider-leg-left-top { top: 9px; left: -13px; transform: rotate(28deg); }
+        .spider-leg-left-upper { top: 19px; left: -16px; transform: rotate(8deg); }
+        .spider-leg-left-lower { top: 30px; left: -16px; transform: rotate(-8deg); }
+        .spider-leg-left-bottom { top: 40px; left: -13px; transform: rotate(-28deg); }
+        .spider-leg-right-top { top: 9px; right: -13px; transform: rotate(-28deg); }
+        .spider-leg-right-upper { top: 19px; right: -16px; transform: rotate(-8deg); }
+        .spider-leg-right-lower { top: 30px; right: -16px; transform: rotate(8deg); }
+        .spider-leg-right-bottom { top: 40px; right: -13px; transform: rotate(28deg); }
+        .spider-eye { position: absolute; z-index: 1; top: 17px; width: 9px; height: 13px; border: 1px solid #9c193d; border-radius: 55% 45%; background: #fff7f8; }
+        .spider-eye-left { left: 16px; transform: rotate(-14deg); }
+        .spider-eye-right { right: 16px; transform: rotate(14deg); }
+        .buddy-mouth { top: 32px; left: 24px; width: 10px; height: 4px; border-color: #76172f; }
+        .mascot-line { color: #873348; }
+        .led-indicator.led-lit { border-color: #e65478; background: #ff9db4; box-shadow: 0 0 0 4px rgba(237, 98, 132, .18), 0 0 18px rgba(211, 47, 87, .65); }
+        .tool-mode { background: #fff5f7; }
+        .tool-mode button.tool-mode-active { background: #ffe2e9; box-shadow: inset 0 0 0 1px #efbdca; }
+        .tool-field input, .tool-field select { border-color: #efcdd5; background: #fff9fa; }
+        .tool-field input:focus, .tool-field select:focus { outline-color: #ed9bad; }
+        .tool-result { border-color: #f0c4d0; background: linear-gradient(110deg, #fff0f3, #ffe2e9); }
+        .quiz-progress { background: #f5dce2; }
+        .quiz-progress-fill { background: linear-gradient(90deg, #d52d55, #f07998); }
+        .quiz-choice { border-color: #efcdd5; background: #fff9fa; }
+        .quiz-choice:hover:not(:disabled) { border-color: #e889a0; background: #fff0f3; }
+        .code-snippet { border-color: #f0c4d0; background: #fff0f3; }
+        .code-bug { background: #ffd5df; color: #941c3c; }
+        main > div:first-child > div, main > div:last-child > div { box-shadow: 0 12px 35px rgba(117, 33, 54, .06); }
+        main > div:first-child button:hover { background: #fff0f3 !important; }
+        main [class~="bg-cyan-500/10"] { background: #ffe5eb !important; border-color: #d32f57 !important; color: #941c3c !important; }
+        main [class~="bg-cyan-500/20"] { background: #ffd9e2 !important; color: #941c3c !important; }
+        main [class~="bg-indigo-500/20"] { background: #ffe2e9 !important; color: #941c3c !important; }
+        main [class~="bg-amber-500/10"] { background: #fff0f2 !important; color: #a34355 !important; border-color: #f1cbd2 !important; }
+        main [class~="bg-slate-800"] { background: #f1dce1 !important; }
+        main [class~="bg-slate-800/50"] { background: #fff1f4 !important; }
+        main [class~="bg-slate-800/80"] { background: #ffe9ee !important; }
+        main [class~="bg-slate-950"] { background-color: #fff5f7 !important; border-color: #f0d0d8 !important; }
+        main [class~="bg-slate-950"] [class~="text-slate-400"], main [class~="bg-slate-950"] [class~="text-slate-500"] { color: #745660 !important; }
+        main [class~="bg-indigo-950"] { background: #ffe1e8 !important; border-color: #f0bdc9 !important; color: #941c3c !important; }
+        main [class~="text-indigo-300"] { color: #a42b4d !important; }
+        main [class~="bg-cyan-500"] { background: #d32f57 !important; color: #fff !important; }
+        main [class~="hover:bg-cyan-400"]:hover { background: #ad2045 !important; }
+        main [class~="bg-slate-950/50"] { background: #fff0f3 !important; border-color: var(--line) !important; }
+        main [class~="bg-slate-950/50"] [class~="text-slate-400"] { color: var(--muted) !important; }
+        main [class~="bg-slate-950/50"] [class~="text-slate-200"] { color: var(--ink) !important; }
+        main [class~="bg-slate-900/80"] [class~="bg-indigo-950/40"] { background: #ffe2e9 !important; border-color: #efbdca !important; color: #70283a !important; }
+        main [class~="bg-slate-900/80"] [class~="bg-indigo-950/40"] .text-cyan-400 { color: #ad2045 !important; }
+        main [class~="focus:border-cyan-500"]:focus { border-color: #e889a0 !important; }
+        main [class~="bg-slate-950"] [class~="bg-slate-800"] { background: #ffe2e9 !important; color: #5b2634 !important; }
+        main [class~="bg-slate-950"] [class~="bg-cyan-500"] { background: #f5a1b4 !important; color: #4b1b2a !important; }
+        main [class~="bg-slate-800"] [class~="bg-gradient-to-r"] { background: #d32f57 !important; }
+        main > div:last-child > .ai-console [class~="bg-indigo-950/40"] { background: #29141b !important; border-color: #59303d !important; }
+        main > div:last-child > .ai-console strong { color: #ffafc0 !important; }
+        main > div:last-child > .ai-console [class~="bg-cyan-500"] { background: #ffafc0 !important; color: #351620 !important; }
+        main > div:last-child > .ai-console [class~="hover:bg-cyan-400"]:hover { background: #ffd1dc !important; }
+        main [class~="ai-nav-active"] { background: #251219 !important; border-color: #7e293d !important; color: #fff4f6 !important; }
+        footer { color: #735660 !important; border-color: var(--line) !important; }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-cyan-500 selection:text-slate-950" x-data="appData()">
@@ -290,13 +359,22 @@
         <section class="lab-intro">
             <div>
                 <p class="lab-kicker">FIELD STUDY 01 / DIGITAL SYSTEMS</p>
-                <h2>Think in signals.<br>Learn by finding the fault.</h2>
+                <h2>Signals in trouble?<br>Our little spider is on it.</h2>
                 <p class="lab-intro-copy">A hands-on ENTC workbench for logic, code, and real-world IoT simulations.</p>
             </div>
             <div class="lab-mascot">
-                <button class="mascot-button" type="button" @click="boopMascot()" aria-label="Make the signal sprite react" title="Give the signal sprite a boop">
+                <button class="mascot-button" type="button" @click="boopMascot()" aria-label="Make the friendly lab spider react" title="Tap the friendly lab spider">
                     <span class="signal-buddy" :class="mascotBop ? 'mascot-bop' : ''" aria-hidden="true">
-                        <span class="buddy-antenna"></span>
+                        <span class="spider-leg spider-leg-left-top"></span>
+                        <span class="spider-leg spider-leg-left-upper"></span>
+                        <span class="spider-leg spider-leg-left-lower"></span>
+                        <span class="spider-leg spider-leg-left-bottom"></span>
+                        <span class="spider-leg spider-leg-right-top"></span>
+                        <span class="spider-leg spider-leg-right-upper"></span>
+                        <span class="spider-leg spider-leg-right-lower"></span>
+                        <span class="spider-leg spider-leg-right-bottom"></span>
+                        <span class="spider-eye spider-eye-left"></span>
+                        <span class="spider-eye spider-eye-right"></span>
                         <span class="buddy-mouth"></span>
                     </span>
                 </button>
