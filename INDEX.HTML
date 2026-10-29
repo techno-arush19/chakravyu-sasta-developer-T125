@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chai Ki Chuski, Circuit Ki Kushti | ENTC</title>
+    <!-- Tailwind CSS for modern, high-end styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: light;
+            --paper: #fff5f9;
+            --ink: #34283f;
+            --muted: #74677d;
+            --line: #ead9e9;
+            --green: #8d68ad;
+            --green-dark: #65487c;
+            --lavender: #f0e7f6;
+            --coral: #d77fa5;
+            --lime: #b17dcc;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            position: relative;
+            overflow-x: hidden;
+            background: var(--paper) !important;
+            color: var(--ink) !important;
+            font-family: 'DM Sans', sans-serif;
+            background-image: radial-gradient(#e4cddd 0.7px, transparent 0.7px) !important;
+            background-size: 19px 19px !important;
+        }
+        body::before {
+            position: fixed;
+            z-index: -1;
+            top: 0;
+            right: -9rem;
+            width: 25rem;
+            height: 25rem;
+            border: 1px solid rgba(141, 104, 173, .16);
+            border-radius: 50%;
+            box-shadow: 0 0 0 34px rgba(141, 104, 173, .045), 0 0 0 68px rgba(215, 127, 165, .035);
+            content: '';
+            pointer-events: none;
+        }
+        .font-code { font-family: 'DM Mono', monospace; }
+        .glow-cyan, .glow-purple { box-shadow: none; }
+        header {
+            min-height: 76px;
+            padding-inline: max(24px, calc((100vw - 1320px) / 2)) !important;
+            background: rgba(255, 245, 249, .94) !important;
+            border-color: var(--line) !important;
+            backdrop-filter: blur(14px);
+        }
+        header h1 {
+            color: var(--ink) !important;
+            background: none !important;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 17px !important;
+            letter-spacing: 0 !important;
+        }
+        header .rounded-full { animation: none; }
+        header [class~="bg-slate-800/60"] {
+            background: #f5eaf2 !important;
+            border-color: var(--line) !important;
+        }
+        header [class~="bg-indigo-950/60"] {
+            background: #eee3f5 !important;
+            border-color: #dfcde9 !important;
+            color: #65487c !important;
+        }
+        main { max-width: 1360px !important; padding-top: 36px !important; padding-bottom: 48px !important; }
+        .lab-intro {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 28px;
+            overflow: hidden;
+            position: relative;
+            padding: 30px 34px;
+            border: 1px solid #e0cfe9;
+            border-radius: 7px;
+            background: var(--lavender);
+            color: var(--ink);
+        }
+        .lab-intro::after {
+            position: absolute;
+            right: 21%;
+            top: -105px;
+            width: 255px;
+            height: 255px;
+            border: 1px solid rgba(141, 104, 173, .25);
+            border-radius: 50%;
+            box-shadow: 0 0 0 25px rgba(141, 104, 173, .06), 0 0 0 50px rgba(215, 127, 165, .045);
+            content: '';
+            pointer-events: none;
+        }
+        .lab-kicker { margin: 0 0 10px; color: #80549c; font: 11px 'DM Mono', monospace; }
+        .lab-intro h2 { margin: 0; color: var(--ink) !important; font: 600 40px/1.08 'Space Grotesk', sans-serif; }
+        .lab-intro-copy { max-width: 540px; margin: 12px 0 0; color: #6d5d78; font-size: 14px; }
+        .lab-stamp { z-index: 1; flex: 0 0 auto; padding: 10px 13px; border: 1px solid #d5c1e2; color: #80549c; font: 11px 'DM Mono', monospace; }
+        .lab-mascot { z-index: 1; display: grid; justify-items: center; gap: 7px; min-width: 108px; }
+        .mascot-button { display: grid; place-items: center; width: 76px; height: 72px; padding: 5px; border: 0; background: transparent; cursor: pointer; }
+        .signal-buddy { position: relative; display: block; width: 58px; height: 50px; border: 2px solid #9469aa; border-radius: 48% 52% 43% 46%; background: #e7cbed; box-shadow: 0 5px 0 #d9bce3; animation: buddy-float 2.8s ease-in-out infinite; }
+        .signal-buddy::before { position: absolute; top: 18px; left: 17px; width: 6px; height: 7px; border-radius: 50%; background: #493650; box-shadow: 17px 0 #493650; content: ''; }
+        .buddy-antenna { position: absolute; top: -12px; left: 26px; width: 2px; height: 12px; background: #9469aa; }
+        .buddy-antenna::after { position: absolute; top: -4px; left: -3px; width: 8px; height: 8px; border-radius: 50%; background: #d77fa5; content: ''; }
+        .buddy-mouth { position: absolute; top: 29px; left: 23px; width: 10px; height: 5px; border-bottom: 2px solid #493650; border-radius: 50%; }
+        .signal-buddy.mascot-bop { animation: buddy-bop .58s cubic-bezier(.2,.8,.2,1); }
+        .mascot-line { max-width: 145px; margin: 0; color: #765a86; font: 10px/1.4 'DM Mono', monospace; text-align: center; }
+        .led-indicator { width: 16px; height: 16px; border: 2px solid #c9b8d1; border-radius: 50%; background: #e8dfeb; }
+        .led-indicator.led-lit { border-color: #bf84cc; background: #dfb4ec; box-shadow: 0 0 0 4px rgba(183, 142, 208, .2), 0 0 18px rgba(177, 125, 204, .8); animation: led-pop .42s ease-out, led-glow 1.5s ease-in-out infinite alternate; }
+        .output-aside { display: block; margin-top: 3px; color: #806b89; font-size: 11px; }
+        .lab-intro { animation: studio-enter .55s ease-out both; }
+        .bench-tools-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
+        .tool-section { min-width: 0; }
+        .tool-section h3, .tool-field, .tool-mode button, .tool-result-label, .tool-result output { color: #211a26; }
+        .tool-section + .tool-section { padding-left: 26px; border-left: 1px solid var(--line); }
+        .tool-description { margin: 6px 0 18px; color: var(--muted); font-size: 13px; }
+        .tool-mode { display: flex; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 6px; background: #fbf5fc; }
+        .tool-mode button { flex: 1; min-height: 36px; border: 0; border-radius: 4px; background: transparent; color: var(--muted); font-size: 12px; font-weight: 700; }
+        .tool-mode button.tool-mode-active { background: #eadcf2; color: #211a26; box-shadow: inset 0 0 0 1px #d9c5e6; }
+        .tool-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+        .tool-field { display: grid; gap: 6px; color: #6d5d78; font: 11px 'DM Mono', monospace; }
+        .tool-field input, .tool-field select { width: 100%; min-width: 0; min-height: 42px; padding: 8px 10px; border: 1px solid #e4d3e9; border-radius: 5px; background: #fffafd; color: var(--ink); font: 13px 'DM Sans', sans-serif; }
+        .tool-field input:focus, .tool-field select:focus { outline: 2px solid #d5b8e4; outline-offset: 1px; }
+        .tool-result { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; padding: 14px; border: 1px solid #e7d5ed; border-radius: 6px; background: linear-gradient(110deg, #fff0f6, #f1e8fa); }
+        .tool-result-label { font: 10px 'DM Mono', monospace; text-transform: uppercase; }
+        .tool-result output { display: block; font: 700 22px 'Space Grotesk', sans-serif; }
+        .tool-result.result-pulse output { animation: answer-pop .32s ease-out; }
+        main > div:last-child > .ai-console { background: #15111a !important; border-color: #352a3d !important; color: #f7effa !important; box-shadow: 0 16px 42px rgba(28, 17, 34, .18); }
+        .ai-console h2 { color: #fff9ff !important; }
+        .ai-console p { color: #c9bdcf !important; }
+        .ai-console [class~="border-slate-800"] { border-color: #392f41 !important; }
+        main > div:last-child > .ai-console [class~="bg-indigo-950/40"] { background: #241d2a !important; border-color: #4a3b54 !important; color: #f0e5f5 !important; }
+        main > div:last-child > .ai-console [class~="bg-slate-800/50"] { background: #211a27 !important; border-color: #3e3346 !important; color: #f6edf9 !important; }
+        .ai-console strong { color: #e4b7f5 !important; }
+        main > div:last-child > .ai-console input { background: #211a27 !important; border-color: #493a52 !important; color: #fff9ff !important; }
+        main > div:last-child > .ai-console input::placeholder { color: #a99aaf !important; }
+        main > div:last-child > .ai-console [class~="bg-cyan-500"] { background: #d7b4e8 !important; color: #211a26 !important; }
+        main > div:last-child > .ai-console [class~="hover:bg-cyan-400"]:hover { background: #e6cdf1 !important; }
+        main > div:last-child > .ai-trigger { background: #17121c !important; border: 1px solid #3c3045; color: #fff9ff !important; }
+        main > div:last-child > .ai-trigger:hover { background: #2a2031 !important; }
+        main [class~="ai-nav-active"] { background: #17121c !important; border-color: #45334f !important; color: #fff9ff !important; }
+        .resistor-preview { display: flex; align-items: center; justify-content: center; height: 54px; margin-top: 14px; }
+        .resistor-wire { width: 22px; height: 2px; background: #a998aa; }
+        .resistor-body { display: flex; align-items: stretch; gap: 9px; height: 27px; padding: 0 12px; border: 1px solid #d8c8da; border-radius: 14px; background: #f7e9d8; }
+        .resistor-band { width: 7px; height: 100%; border-radius: 1px; }
+        .tool-note { margin: 10px 0 0; color: #827488; font-size: 11px; }
+        @keyframes studio-enter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes buddy-float { 50% { transform: translateY(-4px) rotate(3deg); } }
+        @keyframes buddy-bop { 25% { transform: translateY(-13px) rotate(-10deg); } 55% { transform: translateY(2px) rotate(8deg); } 80% { transform: translateY(-5px) rotate(-4deg); } }
+        @keyframes led-pop { 50% { transform: scale(1.45); } }
+        @keyframes led-glow { to { box-shadow: 0 0 0 6px rgba(183, 142, 208, .1), 0 0 23px rgba(177, 125, 204, .95); } }
+        @keyframes answer-pop { 0% { transform: scale(.94); opacity: .55; } 70% { transform: scale(1.04); } 100% { transform: scale(1); opacity: 1; } }
+        main > div:first-child > div,
+        main > div:last-child > div {
+            background: rgba(255, 252, 254, .96) !important;
+            border: 1px solid var(--line) !important;
+            border-radius: 7px !important;
+            box-shadow: 0 12px 35px rgba(86, 54, 100, .07);
+        }
+        main > div:first-child > div:first-child { padding: 21px !important; }
+        main h2 { color: var(--ink) !important; font-family: 'Space Grotesk', sans-serif; }
+        main [class~="text-slate-400"] { color: var(--muted) !important; }
+        main [class~="text-slate-100"] { color: var(--ink) !important; }
+        main [class~="text-slate-500"] { color: #827488 !important; }
+        main [class~="border-slate-800"] { border-color: var(--line) !important; }
+        main button { transition: transform .18s ease, background-color .18s ease, border-color .18s ease; }
+        main button:hover { transform: translateY(-1px); }
+        main > div:first-child button {
+            min-height: 52px;
+            background: transparent;
+            border-radius: 5px !important;
+        }
+        main > div:first-child button:hover { background: #f8eff8 !important; }
+        main [class~="bg-cyan-500/10"] {
+            background: #f1e8f7 !important;
+            border-color: var(--green) !important;
+            color: var(--green-dark) !important;
+        }
+        main [class~="bg-cyan-500/20"] { background: #e9d9f1 !important; color: #65487c !important; }
+        main [class~="bg-indigo-500/20"] { background: #eee5f5 !important; color: #694f80 !important; }
+        main [class~="bg-emerald-500/20"] { background: #f6e5ec !important; color: #8c4f70 !important; }
+        main [class~="bg-amber-500/10"] { background: #f9eaf1 !important; color: #92506e !important; border-color: #efd7e3 !important; }
+        main [class~="bg-slate-800"] { background: #eadfed !important; }
+        main [class~="bg-slate-800/50"] { background: #f8f0f7 !important; }
+        main [class~="bg-slate-800/80"] { background: #f5ebf4 !important; }
+        main [class~="bg-slate-950"] {
+            background-color: #f8f1fa !important;
+            border-color: #e5d7ed !important;
+            color: var(--ink) !important;
+        }
+        main [class~="bg-slate-950"] [class~="text-slate-400"],
+        main [class~="bg-slate-950"] [class~="text-slate-500"] { color: #786a80 !important; }
+        main [class~="bg-slate-950"] [class~="text-slate-300"] { color: #51425c !important; }
+        main [class~="bg-indigo-950"] { background: #eadcf2 !important; border-color: #d9c5e6 !important; color: #624879 !important; }
+        main [class~="text-indigo-300"] { color: #8b62a6 !important; }
+        main [class~="bg-cyan-500"] { background: var(--green) !important; color: white !important; }
+        main [class~="hover:bg-cyan-400"]:hover { background: #755392 !important; }
+        main [class~="bg-emerald-500"] { background: #e4c5ef !important; color: #4a3558 !important; }
+        main [class~="hover:bg-emerald-400"]:hover { background: #d9b5e8 !important; }
+        main [class~="bg-slate-800"]:not([class~="text-slate-400"]) { color: var(--ink); }
+        main [class~="bg-slate-950/50"] { background: #f8eef5 !important; border-color: var(--line) !important; }
+        main [class~="bg-slate-950/50"] [class~="text-slate-400"] { color: var(--muted) !important; }
+        main [class~="bg-slate-950/50"] [class~="text-slate-200"] { color: var(--ink) !important; }
+        main [class~="bg-slate-950/50"] [class~="text-rose-400"] { color: #a34f77 !important; }
+        main [class~="bg-slate-900/80"] [class~="bg-indigo-950/40"] {
+            background: #f0e6f6 !important;
+            border-color: #ddc9e8 !important;
+            color: #594267 !important;
+        }
+        main [class~="bg-slate-900/80"] [class~="bg-indigo-950/40"] .text-cyan-400 { color: #80549c !important; }
+        main [class~="bg-slate-950"] input { color: var(--ink) !important; }
+        main [class~="focus:border-cyan-500"]:focus { border-color: #b78ed0 !important; }
+        main [class~="bg-slate-950"] [class~="bg-slate-800"] { background: #e8d9ef !important; color: #4b3b58 !important; }
+        main [class~="bg-slate-950"] [class~="bg-cyan-500"] { background: #d9b5e8 !important; color: #3d2c49 !important; }
+        main [class~="bg-slate-800"] [class~="bg-gradient-to-r"] { background: var(--coral) !important; }
+        footer { color: #74677d !important; border-color: var(--line) !important; }
+        svg path { stroke-dasharray: 8 6; animation: signal-flow 1.4s linear infinite; }
+        @keyframes signal-flow { to { stroke-dashoffset: -28; } }
+        @media (max-width: 700px) {
+            header { padding-inline: 18px !important; }
+            header h1 { font-size: 15px !important; }
+            header > div:last-child { gap: 8px !important; }
+            main { padding: 22px 16px 34px !important; }
+            .lab-intro { align-items: flex-start; flex-direction: column; padding: 24px 21px; }
+            .lab-intro h2 { font-size: 30px; }
+            .lab-intro::after { right: -85px; top: -135px; }
+            .lab-stamp { padding: 8px 10px; }
+            .bench-tools-grid { grid-template-columns: 1fr; gap: 24px; }
+            .tool-section + .tool-section { padding: 22px 0 0; border-top: 1px solid var(--line); border-left: 0; }
+            .tool-result output { font-size: 20px; }
+            main > div:last-child > div { padding: 20px !important; }
+            main > div:last-child > div:first-child > div:last-child { align-items: flex-start; gap: 14px; flex-direction: column; }
+            main > div:last-child > div:last-child > div:last-child { gap: 10px; flex-wrap: wrap; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-cyan-500 selection:text-slate-950" x-data="appData()">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="w-3 h-3 rounded-full bg-cyan-400 animate-ping"></div>
+            <h1 class="font-bold text-xl tracking-wider bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">Chai Ki Chuski, Circuit Ki Kushti</h1>
+        </div>
+        <div class="flex items-center space-x-6 text-sm">
+            <div class="hidden md:flex items-center space-x-2 text-slate-400 font-code bg-slate-800/60 px-3 py-1.5 rounded-lg border border-slate-700">
+                <span class="text-cyan-400">STATUS:</span> <span class="text-emerald-400">ACTIVE DIAGNOSTIC</span>
+            </div>
+            <div class="flex items-center space-x-2 bg-indigo-950/60 border border-indigo-800/50 px-3 py-1.5 rounded-lg text-indigo-300">
+                <span>⚡ Hackathon Mode</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT LAYOUT -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <section class="lab-intro">
+            <div>
+                <p class="lab-kicker">FIELD STUDY 01 / DIGITAL SYSTEMS</p>
+                <h2>Think in signals.<br>Learn by finding the fault.</h2>
+                <p class="lab-intro-copy">A hands-on ENTC workbench for logic, code, and the signals that connect them.</p>
+            </div>
+            <div class="lab-mascot">
+                <button class="mascot-button" type="button" @click="boopMascot()" aria-label="Make the signal sprite react" title="Give the signal sprite a boop">
+                    <span class="signal-buddy" :class="mascotBop ? 'mascot-bop' : ''" aria-hidden="true">
+                        <span class="buddy-antenna"></span>
+                        <span class="buddy-mouth"></span>
+                    </span>
+                </button>
+                <p class="mascot-line" x-show="mascotLine" x-transition x-text="mascotLine" aria-live="polite"></p>
+            </div>
+        </section>
+
+        <!-- LEFT COLUMN: MODULE NAVIGATION & LIVE STATS -->
+        <div class="space-y-6">
+            <!-- Navigation Cards -->
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5 glow-cyan">
+                <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-4">Diagnostic Modules</h2>
+                <div class="space-y-2">
+                    <button @click="activeTab = 'circuit'" :class="activeTab === 'circuit' ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400' : 'border-slate-800 text-slate-400 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-xl border transition-all flex items-center justify-between font-medium text-sm">
+                        <span>🔌 Logic Gate Fault-Injection</span>
+                        <span class="text-xs bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded">Lab 1</span>
+                    </button>
+                    <button @click="activeTab = 'ai'" :class="activeTab === 'ai' ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400 ai-nav-active' : 'border-slate-800 text-slate-400 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-xl border transition-all flex items-center justify-between font-medium text-sm">
+                        <span>🤖 Socratic AI Troubleshooter</span>
+                        <span class="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded">Active</span>
+                    </button>
+                    <button @click="activeTab = 'telemetry'" :class="activeTab === 'telemetry' ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400' : 'border-slate-800 text-slate-400 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-xl border transition-all flex items-center justify-between font-medium text-sm">
+                        <span>📊 Oscilloscope Telemetry</span>
+                        <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">Live</span>
+                    </button>
+                    <button @click="activeTab = 'tools'" :class="activeTab === 'tools' ? 'bg-cyan-500/10 border-cyan-500 text-cyan-400' : 'border-slate-800 text-slate-400 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-xl border transition-all flex items-center justify-between font-medium text-sm">
+                        <span>🧰 Quick Bench Tools</span>
+                        <span class="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded">2 tools</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hackathon Progress Card -->
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-5">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Mission Progress</h2>
+                    <span class="text-xs font-code text-cyan-400">60% Completed</span>
+                </div>
+                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                    <div class="bg-gradient-to-r from-cyan-500 to-indigo-500 h-full w-3/5"></div>
+                </div>
+                <p class="text-xs text-slate-400 mt-3 leading-relaxed">Fix 3 corrupted logic states to unlock the final Arduino IoT challenge.</p>
+            </div>
+        </div>
+
+        <!-- CENTER & RIGHT: INTERACTIVE WORKSPACE -->
+        <div class="lg:col-span-2 space-y-6">
+
+            <!-- TAB 1: LOGIC GATE SIMULATOR -->
+            <div x-show="activeTab === 'circuit'" class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 glow-purple space-y-6">
+                <div>
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-lg font-bold text-slate-100">Logic lab / AND gate</h2>
+                        <span class="text-xs font-code bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded-full">TRUTH TABLE</span>
+                    </div>
+                    <p class="text-sm text-slate-400 mt-1">Toggle both inputs. A healthy AND gate lights its output only when A and B are both high.</p>
+                </div>
+
+                <!-- Interactive Gate Control Box -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-950 p-6 rounded-xl border border-slate-800/80 items-center text-center">
+                    <!-- Input A -->
+                    <div class="space-y-2">
+                        <span class="text-xs text-slate-400 font-code">INPUT A</span>
+                        <button @click="inputA = inputA ? 0 : 1" :class="inputA ? 'bg-cyan-500 text-slate-950 glow-cyan' : 'bg-slate-800 text-slate-400'" class="w-16 h-16 mx-auto rounded-xl font-bold text-xl transition-all flex items-center justify-center border border-slate-700" :aria-pressed="Boolean(inputA)">
+                            <span x-text="inputA"></span>
+                        </button>
+                    </div>
+                    <!-- Gate Icon -->
+                    <div class="space-y-1">
+                        <div class="inline-block px-4 py-2 bg-indigo-950 border border-indigo-800 rounded-lg text-indigo-300 font-code font-bold">AND GATE</div>
+                        <div class="text-xs text-slate-400">Output = A AND B</div>
+                    </div>
+                    <!-- Input B -->
+                    <div class="space-y-2">
+                        <span class="text-xs text-slate-400 font-code">INPUT B</span>
+                        <button @click="inputB = inputB ? 0 : 1" :class="inputB ? 'bg-cyan-500 text-slate-950 glow-cyan' : 'bg-slate-800 text-slate-400'" class="w-16 h-16 mx-auto rounded-xl font-bold text-xl transition-all flex items-center justify-center border border-slate-700" :aria-pressed="Boolean(inputB)">
+                            <span x-text="inputB"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Result & LED Output Indicator -->
+                <div class="flex items-center justify-between bg-slate-950/50 p-4 rounded-xl border border-slate-800">
+                    <div class="flex items-center space-x-3">
+                        <div class="led-indicator" :class="(inputA & inputB) ? 'led-lit' : ''" role="img" :aria-label="(inputA & inputB) ? 'Output LED on' : 'Output LED off'"></div>
+                        <span class="text-sm font-medium">Output: <span class="font-code" x-text="(inputA & inputB) ? 'LED ON · 1' : 'LED OFF · 0'"></span><span class="output-aside" x-text="(inputA & inputB) ? 'Both inputs agree. Tiny victory!' : 'Waiting for both inputs to say yes.'"></span></span>
+                    </div>
+                    <button @click="triggerAIHint()" class="ai-trigger font-semibold px-4 py-2 rounded-lg text-sm transition-all shadow-lg">
+                        Ask AI Professor 💡
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 2: SOCRATIC AI ASSISTANT -->
+            <div x-show="activeTab === 'ai'" class="ai-console border rounded-2xl p-6 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-100">Socratic lab coach</h2>
+                        <p class="text-xs text-slate-400">Offline demo responses for guided practice. No live AI service is connected.</p>
+                    </div>
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                </div>
+
+                <!-- Chat Messages Box -->
+                <div class="h-64 overflow-y-auto space-y-3 pr-2 font-code text-xs">
+                    <template x-for="msg in chatMessages">
+                        <div :class="msg.sender === 'ai' ? 'bg-indigo-950/40 border-indigo-800/50 text-indigo-200' : 'bg-slate-800/50 border-slate-700 text-slate-200'" class="p-3 rounded-xl border">
+                            <strong class="text-cyan-400" x-text="msg.sender === 'ai' ? 'LAB_COACH > ' : 'YOU > '"></strong>
+                            <span x-text="msg.text"></span>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Chat Input -->
+                <div class="flex space-x-2 pt-2">
+                    <input type="text" x-model="userQuery" @keyup.enter="sendQuery()" placeholder="Ask about resistors, logic gates, or troubleshooting..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-cyan-500 font-code text-slate-200">
+                    <button @click="sendQuery()" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold px-5 py-2.5 rounded-xl text-sm transition-all">Send</button>
+                </div>
+            </div>
+
+            <!-- TAB 3: OSCILLOSCOPE TELEMETRY -->
+            <div x-show="activeTab === 'telemetry'" class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-4">
+                <h2 class="text-lg font-bold text-slate-100">Real-Time Signal Telemetry</h2>
+                <p class="text-sm text-slate-400">Simulating receiver signal-to-noise ratio in optical communication channels.</p>
+                <div class="bg-slate-950 h-48 rounded-xl border border-slate-800 flex items-center justify-center relative overflow-hidden">
+                    <div class="absolute inset-0 flex items-center justify-around opacity-20">
+                        <div class="w-px h-full bg-cyan-500"></div>
+                        <div class="w-px h-full bg-cyan-500"></div>
+                        <div class="w-px h-full bg-cyan-500"></div>
+                    </div>
+                    <!-- Simulated Wave SVG -->
+                    <svg class="w-full h-24 text-cyan-400" fill="none" viewBox="0 0 500 100" stroke="currentColor" stroke-width="2">
+                        <path d="M 0 50 Q 50 10, 100 50 T 200 50 T 300 50 T 400 50 T 500 50" class="animate-pulse" />
+                    </svg>
+                </div>
+                <div class="flex justify-between text-xs font-code text-slate-400">
+                    <span>FREQ: 2.4 GHz</span>
+                    <span class="text-emerald-400">MODULATION: QAM-64</span>
+                    <span>PACKET LOSS: 0.02%</span>
+                </div>
+            </div>
+
+            <div x-show="activeTab === 'tools'" x-transition class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-5">
+                <div>
+                    <p class="lab-kicker">POCKET REFERENCE / NO LAB COAT REQUIRED</p>
+                    <h2 class="text-lg font-bold text-slate-100">Quick Bench Tools</h2>
+                    <p class="text-sm text-slate-400 mt-1">Two everyday electronics helpers. Change a value and watch the answer pop.</p>
+                </div>
+                <div class="bench-tools-grid">
+                    <section class="tool-section" aria-labelledby="ohms-title">
+                        <h3 id="ohms-title" class="text-base font-bold">Ohm's law calculator</h3>
+                        <p class="tool-description">Pick the value to solve. Enter the other two.</p>
+                        <div class="tool-mode" role="group" aria-label="Choose what to calculate">
+                            <button type="button" @click="ohmMode = 'voltage'; pulseResult()" :class="ohmMode === 'voltage' ? 'tool-mode-active' : ''" :aria-pressed="ohmMode === 'voltage'">Voltage</button>
+                            <button type="button" @click="ohmMode = 'current'; pulseResult()" :class="ohmMode === 'current' ? 'tool-mode-active' : ''" :aria-pressed="ohmMode === 'current'">Current</button>
+                            <button type="button" @click="ohmMode = 'resistance'; pulseResult()" :class="ohmMode === 'resistance' ? 'tool-mode-active' : ''" :aria-pressed="ohmMode === 'resistance'">Resistance</button>
+                        </div>
+                        <div class="tool-fields" x-show="ohmMode === 'voltage'" x-transition>
+                            <label class="tool-field">Current · A<input type="number" min="0" step="any" x-model.number="current" @input="pulseResult()" aria-label="Current in amperes"></label>
+                            <label class="tool-field">Resistance · Ω<input type="number" min="0" step="any" x-model.number="resistance" @input="pulseResult()" aria-label="Resistance in ohms"></label>
+                        </div>
+                        <div class="tool-fields" x-show="ohmMode === 'current'" x-transition>
+                            <label class="tool-field">Voltage · V<input type="number" min="0" step="any" x-model.number="voltage" @input="pulseResult()" aria-label="Voltage in volts"></label>
+                            <label class="tool-field">Resistance · Ω<input type="number" min="0" step="any" x-model.number="resistance" @input="pulseResult()" aria-label="Resistance in ohms"></label>
+                        </div>
+                        <div class="tool-fields" x-show="ohmMode === 'resistance'" x-transition>
+                            <label class="tool-field">Voltage · V<input type="number" min="0" step="any" x-model.number="voltage" @input="pulseResult()" aria-label="Voltage in volts"></label>
+                            <label class="tool-field">Current · A<input type="number" min="0" step="any" x-model.number="current" @input="pulseResult()" aria-label="Current in amperes"></label>
+                        </div>
+                        <div class="tool-result" :class="resultPulse ? 'result-pulse' : ''" aria-live="polite">
+                            <span class="tool-result-label" x-text="ohmMode + ' result'"></span>
+                            <output x-text="ohmResult === null ? 'Check values' : formatNumber(ohmResult) + ' ' + ohmUnits[ohmMode]"></output>
+                        </div>
+                        <p class="tool-note">Formula: <span x-text="ohmFormulas[ohmMode]"></span></p>
+                    </section>
+
+                    <section class="tool-section" aria-labelledby="resistor-title">
+                        <h3 id="resistor-title" class="text-base font-bold">Resistor color decoder</h3>
+                        <p class="tool-description">Choose the first three bands on a 4-band resistor.</p>
+                        <div class="tool-fields">
+                            <label class="tool-field">Band 1<select x-model.number="resistorBandOne" @change="pulseResult()"><template x-for="color in bandColors" :key="color.name"><option :value="color.value" x-text="color.name"></option></template></select></label>
+                            <label class="tool-field">Band 2<select x-model.number="resistorBandTwo" @change="pulseResult()"><template x-for="color in bandColors" :key="color.name"><option :value="color.value" x-text="color.name"></option></template></select></label>
+                            <label class="tool-field">Multiplier<select x-model.number="resistorMultiplier" @change="pulseResult()"><template x-for="multiplier in multipliers" :key="multiplier.name"><option :value="multiplier.value" x-text="multiplier.name"></option></template></select></label>
+                            <label class="tool-field">Tolerance<select x-model="resistorTolerance"><option value="gold">Gold · ±5%</option><option value="silver">Silver · ±10%</option></select></label>
+                        </div>
+                        <div class="resistor-preview" aria-label="Resistor color band preview">
+                            <span class="resistor-wire"></span>
+                            <span class="resistor-body">
+                                <span class="resistor-band" :style="{ backgroundColor: bandColors[resistorBandOne].hex }"></span>
+                                <span class="resistor-band" :style="{ backgroundColor: bandColors[resistorBandTwo].hex }"></span>
+                                <span class="resistor-band" :style="{ backgroundColor: multiplierColor.hex }"></span>
+                                <span class="resistor-band" :style="{ backgroundColor: resistorTolerance === 'gold' ? '#c99a3b' : '#a9a9ad' }"></span>
+                            </span>
+                            <span class="resistor-wire"></span>
+                        </div>
+                        <div class="tool-result" :class="resultPulse ? 'result-pulse' : ''" aria-live="polite">
+                            <span class="tool-result-label">Resistance · <span x-text="resistorTolerance === 'gold' ? '±5%' : '±10%'"></span></span>
+                            <output x-text="formatResistance()"></output>
+                        </div>
+                        <p class="tool-note">4-band decoder: two digits, multiplier, and tolerance.</p>
+                    </section>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800 py-4 text-center text-xs text-slate-500 font-code">
+        CHAKRAVYUH AI VIBE CODING CHALLENGE // SMART ENTC INNOVATION PLATFORM
+    </footer>
+
+    <!-- ALPINE JS STATE LOGIC -->
+    <script>
+        function appData() {
+            return {
+                activeTab: 'circuit',
+                inputA: 1,
+                inputB: 0,
+                mascotBop: false,
+                mascotLine: '',
+                ohmMode: 'voltage',
+                voltage: 5,
+                current: 0.02,
+                resistance: 220,
+                ohmUnits: { voltage: 'V', current: 'A', resistance: 'Ω' },
+                ohmFormulas: { voltage: 'V = I × R', current: 'I = V ÷ R', resistance: 'R = V ÷ I' },
+                resultPulse: false,
+                resistorBandOne: 4,
+                resistorBandTwo: 7,
+                resistorMultiplier: 1000,
+                resistorTolerance: 'gold',
+                bandColors: [
+                    { name: 'Black', value: 0, hex: '#28242b' },
+                    { name: 'Brown', value: 1, hex: '#79513b' },
+                    { name: 'Red', value: 2, hex: '#d34f61' },
+                    { name: 'Orange', value: 3, hex: '#e88948' },
+                    { name: 'Yellow', value: 4, hex: '#e7ca55' },
+                    { name: 'Green', value: 5, hex: '#5d9b70' },
+                    { name: 'Blue', value: 6, hex: '#567dbb' },
+                    { name: 'Violet', value: 7, hex: '#8963a9' },
+                    { name: 'Gray', value: 8, hex: '#8f8b96' },
+                    { name: 'White', value: 9, hex: '#f5f0e9' }
+                ],
+                multipliers: [
+                    { name: 'Black · ×1', value: 1, hex: '#28242b' },
+                    { name: 'Brown · ×10', value: 10, hex: '#79513b' },
+                    { name: 'Red · ×100', value: 100, hex: '#d34f61' },
+                    { name: 'Orange · ×1k', value: 1000, hex: '#e88948' },
+                    { name: 'Yellow · ×10k', value: 10000, hex: '#e7ca55' },
+                    { name: 'Green · ×100k', value: 100000, hex: '#5d9b70' },
+                    { name: 'Blue · ×1M', value: 1000000, hex: '#567dbb' },
+                    { name: 'Violet · ×10M', value: 10000000, hex: '#8963a9' },
+                    { name: 'Gold · ×0.1', value: 0.1, hex: '#c99a3b' },
+                    { name: 'Silver · ×0.01', value: 0.01, hex: '#a9a9ad' }
+                ],
+                userQuery: '',
+                chatMessages: [
+                    { sender: 'ai', text: 'Welcome to Chai Ki Chuski, Circuit Ki Kushti. Chai leke aao, circuit suljhao!' }
+                ],
+                get ohmResult() {
+                    const requiredInputs = {
+                        voltage: ['current', 'resistance'],
+                        current: ['voltage', 'resistance'],
+                        resistance: ['voltage', 'current']
+                    }[this.ohmMode];
+                    if (requiredInputs.some((key) => this[key] === '' || this[key] === null || !Number.isFinite(Number(this[key])))) return null;
+                    const voltage = Number(this.voltage);
+                    const current = Number(this.current);
+                    const resistance = Number(this.resistance);
+                    let result = null;
+                    if (this.ohmMode === 'voltage' && current >= 0 && resistance > 0) result = current * resistance;
+                    if (this.ohmMode === 'current' && voltage >= 0 && resistance > 0) result = voltage / resistance;
+                    if (this.ohmMode === 'resistance' && voltage >= 0 && current > 0) result = voltage / current;
+                    return Number.isFinite(result) ? result : null;
+                },
+                get multiplierColor() {
+                    return this.multipliers.find((item) => item.value === Number(this.resistorMultiplier)) || this.multipliers[0];
+                },
+                formatNumber(value) {
+                    return Number(value.toPrecision(4)).toString();
+                },
+                formatResistance() {
+                    const value = (this.resistorBandOne * 10 + this.resistorBandTwo) * this.resistorMultiplier;
+                    if (value >= 1000000) return `${this.formatNumber(value / 1000000)} MΩ`;
+                    if (value >= 1000) return `${this.formatNumber(value / 1000)} kΩ`;
+                    return `${this.formatNumber(value)} Ω`;
+                },
+                pulseResult() {
+                    this.resultPulse = false;
+                    requestAnimationFrame(() => { this.resultPulse = true; });
+                    setTimeout(() => { this.resultPulse = false; }, 400);
+                },
+                sendQuery() {
+                    if (!this.userQuery.trim()) return;
+                    this.chatMessages.push({ sender: 'user', text: this.userQuery });
+                    let q = this.userQuery.toLowerCase();
+                    setTimeout(() => {
+                        let reply = "Remember, true engineers inspect the circuit schematic before writing code. Check your pull-down resistors.";
+                        if (q.includes('resistor')) reply = "A pull-down resistor ensures the input pin drops to a known logic LOW when the switch is open. Good thought!";
+                        if (q.includes('gate')) reply = "Logic gates form the bedrock of digital systems. Verify your truth table inputs!";
+                        this.chatMessages.push({ sender: 'ai', text: reply });
+                    }, 500);
+                    this.userQuery = '';
+                },
+                triggerAIHint() {
+                    this.activeTab = 'ai';
+                    this.chatMessages.push({ sender: 'ai', text: '💡 HINT FOR AND-GATE LAB: Notice how input B is currently 0. An AND gate outputs 1 ONLY when both inputs are high!' });
+                },
+                boopMascot() {
+                    const reactions = [
+                        'Beep boop. I am extremely qualified.',
+                        'I came, I saw, I conducted.',
+                        'Current mood: positively charged.',
+                        'That was a shocking experience.'
+                    ];
+                    this.mascotBop = false;
+                    requestAnimationFrame(() => { this.mascotBop = true; });
+                    this.mascotLine = reactions[Math.floor(Math.random() * reactions.length)];
+                    setTimeout(() => { this.mascotBop = false; }, 650);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
